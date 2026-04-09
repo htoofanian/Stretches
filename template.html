@@ -1,0 +1,1706 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+<title>FLOOR STRETCH</title>
+<!-- floor_stretch_template_v32.html -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f2ece3;
+    --surface: #fff;
+    --ink: #1a1510;
+    --accent: #D42D24;
+    --accent-soft: rgba(212,45,36,0.12);
+    --track: #ddd5c8;
+    --done: #5a8a4a;
+    --rest: #4a7a98;
+    --rest-soft: rgba(74,122,152,0.12);
+    --green: #27AE60;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Inter', system-ui, sans-serif;
+    background: white;
+    height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow: hidden;
+  }
+
+  /* ── Fixed top section ─────────────────────────────────────── */
+  .fixed-top {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 10;
+    background: var(--bg);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1rem 1rem 0.6rem;
+  }
+
+  h1 {
+    font-family: 'Inter', sans-serif;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+    line-height: 1;
+    text-align: center;
+    margin-bottom: 0.3rem;
+  }
+
+  .timers-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    width: 100%;
+    max-width: 380px;
+    margin-top: 0.6rem;
+    margin-bottom: 0.6rem;
+  }
+
+  .timer-box {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1em;
+    flex: 1;
+  }
+  .timer-box:first-child { align-items: flex-start; }
+  .timer-box:nth-child(2) { align-items: center; }
+  .timer-box:last-child  { align-items: flex-end; }
+
+  .timer-label {
+    font-size: 0.8rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: var(--ink);
+  }
+
+  .timer-val {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--ink);
+    font-family: 'Inter', sans-serif;
+    letter-spacing: -0.02em;
+    line-height: 1;
+  }
+
+  .total-duration {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--ink);
+    font-family: 'Inter', sans-serif;
+    letter-spacing: -0.02em;
+    line-height: 1;
+  }
+
+  .edit-row-outer {
+    display: flex;
+    justify-content: center;
+    gap: 0.6rem;
+    width: 100%;
+    max-width: 380px;
+    margin-bottom: 0.4rem;
+  }
+
+  .btn-edit {
+    min-width: 7.5rem;
+    background: transparent;
+    border: 2px solid var(--ink);
+    color: var(--ink);
+    font-size: 0.8rem;
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 0.4rem 1rem;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+    text-align: center;
+  }
+  .btn-edit:hover { background: var(--ink); color: var(--bg); }
+
+  /* ── Coach display ──────────────────────────────────────────── */
+  .coach-row {
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink);
+    text-align: center;
+    width: 100%;
+    max-width: 380px;
+    margin-bottom: 0.2rem;
+  }
+  .coach-label { opacity: 0.5; margin-right: 0.3em; }
+  #coachName   { color: var(--accent); }
+
+  /* ── Voice selector (in edit panel) ────────────────────────── */
+  .voice-selector select {
+    padding: 0.35rem 2rem 0.35rem 1.2rem; border-radius: 50px; border: 2px solid var(--track);
+    background: var(--bg); font-family: 'Inter', sans-serif; font-size: 0.9rem; font-weight: 700;
+    color: var(--ink); cursor: pointer;
+    appearance: none; -webkit-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%231a1510' stroke-width='2' fill='none'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.7rem center;
+  }
+  .voice-section-label {
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink);
+    margin-bottom: 0.5rem;
+    text-align: center;
+  }
+
+  /* ── Notice toggles ─────────────────────────────────────────── */
+  .toggle-rows {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .toggle-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--surface);
+    border-radius: 0.75rem;
+    padding: 0.7rem 1rem;
+    border: 1px solid var(--track);
+  }
+  .toggle-label {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--ink);
+    font-family: 'Inter', sans-serif;
+  }
+  .btn-toggle {
+    min-width: 52px;
+    padding: 0.35rem 0.8rem;
+    border-radius: 50px;
+    border: 2px solid var(--track);
+    background: white;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--ink);
+    cursor: pointer;
+    transition: background 0.2s, border-color 0.2s, color 0.2s;
+    text-align: center;
+  }
+  .btn-toggle.active {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: white;
+  }
+
+  .progress-bar-wrap {
+    width: 100%;
+    max-width: 380px;
+    height: 4px;
+    background: var(--track);
+    border-radius: 2px;
+    margin-bottom: 0.8rem;
+  }
+
+  .progress-bar-fill {
+    height: 100%;
+    background: var(--accent);
+    border-radius: 2px;
+    transition: width 0.5s ease;
+    width: 0%;
+  }
+
+  /* ── Card ───────────────────────────────────────────────────── */
+  .card {
+    background: var(--surface);
+    border-radius: 1.5rem;
+    padding: 0.6rem 1.2rem 0.7rem;
+    width: 100%;
+    max-width: 380px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.35rem;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.10);
+    border: 1px solid var(--track);
+  }
+
+  .ring-num-display {
+    font-family: 'Inter', sans-serif;
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: var(--ink);
+    letter-spacing: -0.02em;
+    line-height: 1;
+    text-align: center;
+    width: 100%;
+  }
+
+  .phase-label {
+    font-size: 0.75rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  /* ── Exercise info ──────────────────────────────────────────── */
+  .ex-info { text-align: center; }
+
+  .ex-num {
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--ink);
+    font-weight: 700;
+    margin-bottom: 0.3rem;
+  }
+
+  .ex-name {
+    font-family: 'Inter', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--ink);
+    line-height: 1.2;
+  }
+
+  .ex-side {
+    font-size: 0.85rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink);
+    font-weight: 700;
+    margin-top: 0.25rem;
+  }
+
+  .status-msg {
+    font-size: 0.8rem;
+    color: var(--ink);
+    font-weight: 600;
+    text-align: center;
+  }
+
+  /* ── Controls ───────────────────────────────────────────────── */
+  .controls {
+    display: flex;
+    gap: 0.8rem;
+    justify-content: center;
+    width: 100%;
+  }
+
+  button {
+    cursor: pointer;
+    font-family: 'Inter', sans-serif;
+    border: none;
+    transition: background 0.2s, color 0.2s, border-color 0.2s;
+  }
+
+  .btn-reset {
+    background: transparent;
+    border: 1.5px solid var(--track);
+    color: var(--ink);
+    font-size: 0.9rem;
+    font-weight: 700;
+    padding: 0.65rem 2rem;
+    border-radius: 50px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .btn-reset:hover { border-color: var(--ink); }
+
+  .btn-main {
+    background: var(--accent);
+    color: #fff;
+    font-size: 0.9rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    padding: 0.65rem 2rem;
+    border-radius: 50px;
+    text-transform: uppercase;
+  }
+  .btn-main:hover { filter: brightness(1.1); }
+
+  /* ── Queue ──────────────────────────────────────────────────── */
+  .queue-section {
+    width: 100%;
+    max-width: 380px;
+    flex: 1;
+    padding: 0 0 1rem;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+  }
+
+  .queue-card {
+    background: var(--surface);
+    border-radius: 1.5rem;
+    border: 1px solid var(--track);
+    box-shadow: 0 4px 24px rgba(0,0,0,0.10);
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  .queue-header {
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--ink);
+    font-weight: 700;
+    padding: 0.75rem 1.1rem 0.5rem;
+    border-bottom: 1px solid var(--track);
+    flex-shrink: 0;
+  }
+
+  .queue-scroll {
+    overflow-y: auto;
+    flex: 1;
+    padding: 0.5rem 0.75rem 1rem;
+    -webkit-overflow-scrolling: touch;
+  }
+  .queue-scroll::-webkit-scrollbar { width: 3px; }
+  .queue-scroll::-webkit-scrollbar-thumb { background: var(--track); border-radius: 2px; }
+
+  .queue {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  .q-item {
+    background: var(--surface);
+    border-radius: 0.75rem;
+    padding: 0.75rem 1.1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid var(--track);
+    border-left: 4px solid var(--accent);
+    opacity: 0.4;
+    transition: opacity 0.25s, border-color 0.25s, background 0.25s;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .q-item:hover { opacity: 0.8; }
+  .q-item.upcoming { opacity: 0.6; }
+  .q-item.current {
+    opacity: 1;
+    background: rgba(255,220,80,0.2);
+    border-color: #c9a800;
+    border-left-color: #c9a800;
+  }
+  .q-item.current.rest-item {
+    background: var(--rest-soft);
+    border-color: var(--rest);
+    border-left-color: transparent;
+  }
+  .q-item.completed { opacity: 0.4; }
+  .q-item.rest-item { border-left-color: transparent; padding: 0.55rem 1.1rem; }
+  .q-item.rest-item .q-name { font-size: 0.875rem; font-weight: 600; opacity: 0.75; padding-left: 1rem; }
+  .q-item.rest-item .q-time { font-size: 0.875rem; font-weight: 600; opacity: 0.75; }
+  .q-item.jump-target {
+    opacity: 1;
+    background: var(--accent-soft);
+    border-color: var(--accent);
+    border-left-color: var(--accent);
+  }
+
+  .q-name {
+    font-size: 0.95rem;
+    color: var(--ink);
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+  }
+
+  .q-time {
+    font-size: 0.9rem;
+    color: var(--ink);
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    white-space: nowrap;
+    margin-left: 0.5rem;
+  }
+
+  .q-name small {
+    font-size: 0.95rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    margin-left: 0.4rem;
+  }
+
+  /* ── Edit overlay ───────────────────────────────────────────── */
+  .edit-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(26,21,16,0.5);
+    z-index: 100;
+    align-items: flex-end;
+    justify-content: center;
+  }
+  .edit-overlay.open { display: flex; }
+
+  .edit-panel {
+    background: var(--bg);
+    border-radius: 1.5rem 1.5rem 0 0;
+    width: 100%;
+    max-width: 480px;
+    max-height: 92dvh;
+    display: flex;
+    flex-direction: column;
+    padding: 1.5rem 1.2rem 1.5rem;
+    gap: 1rem;
+    box-shadow: 0 -8px 32px rgba(0,0,0,0.15);
+  }
+
+  .edit-panel-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+
+  .edit-panel-title {
+    font-family: 'Inter', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--ink);
+  }
+
+  .btn-close {
+    background: transparent;
+    border: none;
+    font-size: 1.5rem;
+    color: var(--ink);
+    cursor: pointer;
+    padding: 0.2rem 0.5rem;
+    position: absolute;
+    right: 0;
+  }
+
+  .settings-body {
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    flex: 1;
+  }
+  .settings-body::-webkit-scrollbar { width: 3px; }
+  .settings-body::-webkit-scrollbar-thumb { background: var(--track); border-radius: 2px; }
+
+  .edit-list {
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    flex: 1;
+  }
+  .edit-list::-webkit-scrollbar { width: 3px; }
+  .edit-list::-webkit-scrollbar-thumb { background: var(--track); border-radius: 2px; }
+
+  .edit-row {
+    background: var(--surface);
+    border-radius: 0.75rem;
+    padding: 0.7rem 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    border: 1px solid var(--track);
+  }
+
+  .edit-drag {
+    color: var(--ink);
+    font-size: 1.3rem;
+    cursor: grab;
+    padding: 0.5rem 0.6rem;
+    touch-action: none;
+    user-select: none;
+    -webkit-user-select: none;
+    line-height: 1;
+  }
+
+  .edit-row.dragging {
+    position: fixed;
+    z-index: 200;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+    transform: scale(1.03);
+    pointer-events: none;
+    opacity: 0.7;
+    width: var(--drag-width);
+  }
+
+  .edit-placeholder {
+    border: 2px dashed var(--accent);
+    border-radius: 0.75rem;
+    background: var(--accent-soft);
+    min-height: 3rem;
+  }
+
+  .edit-origin-marker {
+    border: 2px dashed var(--track);
+    border-radius: 0.75rem;
+    background: rgba(221,213,200,0.2);
+    min-height: 3rem;
+  }
+
+  .edit-name {
+    flex: 1;
+    font-size: 0.9rem;
+    color: var(--ink);
+    font-family: 'Inter', sans-serif;
+  }
+
+  .edit-dur {
+    width: 54px;
+    border: 1.5px solid var(--track);
+    border-radius: 6px;
+    padding: 0.3rem 0.4rem;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.9rem;
+    color: var(--ink);
+    background: white;
+    text-align: center;
+  }
+
+  .edit-dur-label {
+    font-size: 0.75rem;
+    color: var(--ink);
+    white-space: nowrap;
+    font-family: 'Inter', sans-serif;
+  }
+
+  .edit-split {
+    font-size: 0.75rem;
+    color: var(--ink);
+    white-space: nowrap;
+    padding: 0.25rem 0.6rem;
+    border: 1.5px solid var(--track);
+    border-radius: 20px;
+    cursor: pointer;
+    background: white;
+    transition: background 0.2s, color 0.2s;
+    font-family: 'Inter', sans-serif;
+  }
+  .edit-split.active { background: var(--accent); color: white; border-color: var(--accent); }
+
+  .btn-del {
+    background: transparent;
+    border: none;
+    color: var(--track);
+    font-size: 1.1rem;
+    cursor: pointer;
+    padding: 0 0.2rem;
+    transition: color 0.2s;
+  }
+  .btn-del:hover { color: #c00; }
+
+  .edit-actions {
+    display: flex;
+    gap: 0.7rem;
+    justify-content: center;
+  }
+
+  .btn-apply {
+    background: var(--accent);
+    color: #fff;
+    font-size: 0.9rem;
+    padding: 0.7rem 1.5rem;
+    border-radius: 50px;
+    font-family: 'Inter', sans-serif;
+    cursor: pointer;
+    border: none;
+    transition: background 0.2s;
+  }
+  .btn-apply:hover { background: var(--accent); }
+
+  .btn-cancel {
+    background: transparent;
+    border: 1.5px solid var(--track);
+    color: var(--ink);
+    font-size: 0.9rem;
+    padding: 0.7rem 1.2rem;
+    border-radius: 50px;
+    font-family: 'Inter', sans-serif;
+    cursor: pointer;
+  }
+</style>
+</head>
+<body>
+
+<div class="fixed-top">
+  <h1>FLOOR STRETCH</h1>
+  <div class="timers-bar">
+    <div class="timer-box">
+      <span class="timer-label">Elapsed</span>
+      <span class="timer-val" id="elapsedDisplay">0:00</span>
+    </div>
+    <div class="timer-box">
+      <span class="timer-label">Total</span>
+      <span class="total-duration" id="totalDurationDisplay"></span>
+    </div>
+    <div class="timer-box">
+      <span class="timer-label">Remaining</span>
+      <span class="timer-val" id="remainingDisplay">—</span>
+    </div>
+  </div>
+  <div class="edit-row-outer">
+    <button class="btn-edit" onclick="openEdit()">EDIT</button>
+    <button class="btn-edit" onclick="openSettings()">SETTINGS</button>
+  </div>
+  <div class="progress-bar-wrap">
+    <div class="progress-bar-fill" id="progressBar"></div>
+  </div>
+
+  <div class="card" id="mainCard">
+  <div id="numDisplay" class="ring-num-display">0:00</div>
+
+  <div class="phase-label" id="phaseLabel"></div>
+
+  <div class="ex-info">
+    <div class="ex-num" id="exNum">Ready</div>
+    <div class="ex-name" id="exName">FLOOR STRETCH</div>
+    <div class="ex-side" id="exSide"></div>
+    <div class="coach-row">
+      <span class="coach-label">Coach:</span><span id="coachName">Hope</span>
+    </div>
+  </div>
+
+  <div class="status-msg" id="statusMsg"></div>
+
+  <div class="controls">
+    <button class="btn-reset" onclick="resetTimer()">Reset</button>
+    <button class="btn-main" id="mainBtn" onclick="ringTap()">Start</button>
+  </div>
+</div><!-- end card -->
+</div><!-- end fixed-top -->
+
+<div class="queue-section" id="queueSection">
+  <div class="queue-card">
+    <div class="queue-header">Full Routine — tap any step to jump</div>
+    <div class="queue-scroll" id="queueScroll">
+      <div class="queue" id="queueEl"></div>
+    </div>
+  </div>
+</div>
+
+<div class="edit-overlay" id="editOverlay">
+  <div class="edit-panel">
+    <div class="edit-panel-header">
+      <span class="edit-panel-title">Edit Routine</span>
+      <button class="btn-close" onclick="closeEdit()">✕</button>
+    </div>
+    <div class="edit-list" id="editList"></div>
+    <div class="edit-actions">
+      <button class="btn-cancel" onclick="closeEdit()">Cancel</button>
+      <button class="btn-apply" onclick="applyEdit()">Apply</button>
+    </div>
+  </div>
+</div>
+
+<!-- Settings overlay -->
+<div class="edit-overlay" id="settingsOverlay">
+  <div class="edit-panel">
+    <div class="edit-panel-header">
+      <span class="edit-panel-title">Settings</span>
+      <button class="btn-close" onclick="closeSettings()">✕</button>
+    </div>
+    <div class="settings-body">
+    <div class="toggle-row" style="margin-bottom:0.5rem;">
+      <span class="toggle-label">Coach voice</span>
+      <div class="voice-selector" id="voiceSelector"></div>
+    </div>
+    <div class="voice-section-label">Notices</div>
+    <div class="toggle-rows">
+      <div class="toggle-row">
+        <span class="toggle-label">3-2-1 countdown</span>
+        <button class="btn-toggle active" id="toggle321" onclick="toggleSetting('321')">ON</button>
+      </div>
+      <div class="toggle-row">
+        <span class="toggle-label">Halfway notice</span>
+        <button class="btn-toggle active" id="toggleHalfway" onclick="toggleSetting('halfway')">ON</button>
+      </div>
+      <div class="toggle-row">
+        <span class="toggle-label">10-second markers</span>
+        <button class="btn-toggle active" id="toggle10sec" onclick="toggleSetting('10sec')">ON</button>
+      </div>
+      <div class="toggle-row">
+        <span class="toggle-label">Session count (this week)</span>
+        <button class="btn-toggle active" id="toggleSession" onclick="toggleSetting('session')">ON</button>
+      </div>
+    </div>
+    </div>
+    <div class="edit-actions">
+      <button class="btn-cancel" onclick="closeSettings()">Cancel</button>
+      <button class="btn-apply" onclick="closeSettings()">Apply</button>
+    </div>
+    <div style="text-align:center;color:#888;font-size:0.7rem;margin-top:12px;">v32 · 2026-04-08</div>
+  </div>
+</div>
+
+<script>
+/*AUDIO_MAP_PLACEHOLDER*/
+
+// ─── Exercises ────────────────────────────────────────────────────────────────
+// restDur: duration of the rest BEFORE this exercise (default 5s)
+// restWarn: audio cue key to play during that rest (false = none)
+let EXERCISES = [
+  { name:"Standing Forward Bend - back limp, knees soft",                       dur:60, split:false, restDur:5,  restWarn:false },
+  { name:"Chair Hamstring - Sit tall, hinge forward from hips",                           dur:60, split:false, restDur:8,  restWarn:"Grab your band" },
+  { name:"Band Eversions - Loop band around foot, turn sole outward",                     dur:40, split:"lr",  restDur:5,  restWarn:false },
+  { name:"Butterfly - Soles of feet together, sit tall",                                  dur:40, split:false, restDur:10, restWarn:"Move to the floor" },
+  { name:"Butterfly - Now lean forward gently",                                           dur:20, split:false, restDur:5,  restWarn:false },
+  { name:"Forward Bend - Tuck one leg, reach toward the straight foot",                   dur:40, split:"lr",  restDur:5,  restWarn:false },
+  { name:"Reverse Twist - Reach back behind you, hold the chair or floor",                dur:30, split:"lr",  restDur:5,  restWarn:false },
+  { name:"Lie Down - Arms over head, full body stretch",                                  dur:60, split:false, restDur:15, restWarn:"Time to lie down" },
+  { name:"Knees to Chest - Hug both knees in tight",                                      dur:30, split:false, restDur:5,  restWarn:false },
+  { name:"Knee Hug - Knees wide apart",                                                   dur:30, split:false, restDur:5,  restWarn:false },
+  { name:"One Leg Up Bent - Hold thigh, pull toward chest",                               dur:60, split:"lr",  restDur:5,  restWarn:false },
+  { name:"Supine Hamstring - Slowly straighten one leg toward ceiling",                   dur:60, split:"lr",  restDur:5,  restWarn:false },
+  { name:"One Leg Up Straight - Use band, keep leg straight",                             dur:60, split:"lr",  restDur:8,  restWarn:"Grab your band" },
+  { name:"Hip Raises - Press hips up and hold",                                           dur:60, split:false, restDur:5,  restWarn:false },
+  { name:"Figure 4 - Foot on other knee, lift back knee toward chest",                    dur:40, split:"lr",  restDur:5,  restWarn:false },
+  { name:"Knee Crossover - Drop knee across other leg, pull knee down",                   dur:40, split:"lr",  restDur:5,  restWarn:false },
+  { name:"Quad Stretch - Roll onto side, pull foot toward your back",                     dur:60, split:"lr",  restDur:5,  restWarn:false },
+  { name:"Sleep on Side - Stretch outer hip, bottom leg straight, top knee bent",         dur:60, split:"lr",  restDur:5,  restWarn:false },
+  { name:"Point and Contract Toes",                                                       dur:30, split:false, restDur:5,  restWarn:false },
+  { name:"Standing Forward Bend - back limp, knees soft",         dur:60, split:false, restDur:15, restWarn:"Time to stand up" },
+  { name:"Single Leg Balance - Stand on one foot, eyes open then eyes closed",            dur:60, split:"lr",  restDur:5,  restWarn:false },
+];
+
+// ─── Constants ────────────────────────────────────────────────────────────────
+let   REST_DUR     = 5;
+const GET_READY_DUR = 5;
+
+// ─── Settings (voice + notice toggles) ───────────────────────────────────────
+// ── Voice roster ─────────────────────────────────────────────────────────────
+// To remove a voice: delete its line. To add one: add a line + its audio_map.
+// Button order left→right matches the order of entries here.
+const VOICES = {
+  fariba:   "FARIBA",
+  hope:     "HOPE",
+  arabella: "ARABELLA",
+  brittney: "BRITTNEY",
+};
+const VOICE_DEFAULT = "hope";
+const SETTINGS_KEY = "floorStretch_settings";
+let   VOICE        = "hope";
+let   SHOW_321     = true;   // end-of-hold 3-2-1 countdown
+let   SHOW_HALFWAY = true;   // generic halfway notice
+let   SHOW_10SEC   = false;   // every-10-second markers
+let   SHOW_SESSION = true;
+
+const WEEK_SESSION_KEY = "floorStretch_weekSessions";
+
+function getWeekMonday() {
+  const now = new Date();
+  const day = now.getDay();
+  const diff = day === 0 ? -6 : 1 - day;
+  const mon = new Date(now.getFullYear(), now.getMonth(), now.getDate() + diff);
+  return mon.getFullYear() + "-" +
+         String(mon.getMonth() + 1).padStart(2, "0") + "-" +
+         String(mon.getDate()).padStart(2, "0");
+}
+
+function getSessionCount() {
+  try {
+    const data = JSON.parse(localStorage.getItem(WEEK_SESSION_KEY));
+    if (data && data.weekKey === getWeekMonday()) return data.count;
+  } catch(e) {}
+  return 0;
+}
+
+function incrementSession() {
+  const weekKey = getWeekMonday();
+  const count = getSessionCount() + 1;
+  try {
+    localStorage.setItem(WEEK_SESSION_KEY, JSON.stringify({ weekKey, count }));
+  } catch(e) {}
+}
+
+function cue(phrase) { return phrase + "_" + VOICE; }
+
+function loadSettings() {
+  try {
+    const saved = JSON.parse(localStorage.getItem(SETTINGS_KEY));
+    if (saved) {
+      if (saved.voice && VOICES[saved.voice]) VOICE = saved.voice;
+      else if (saved.voice)               VOICE = VOICE_DEFAULT;
+      if (typeof saved.show321     === "boolean") SHOW_321     = saved.show321;
+      if (typeof saved.showHalfway === "boolean") SHOW_HALFWAY = saved.showHalfway;
+      if (typeof saved.show10sec   === "boolean") SHOW_10SEC   = saved.show10sec;
+      if (typeof saved.showSession === "boolean") SHOW_SESSION = saved.showSession;
+      if (typeof saved.restDur === "number" && saved.restDur >= 1 && saved.restDur <= 30) REST_DUR = saved.restDur;
+    }
+  } catch(e) {}
+}
+
+function saveSettings() {
+  try {
+    localStorage.setItem(SETTINGS_KEY, JSON.stringify({
+      voice: VOICE, show321: SHOW_321, showHalfway: SHOW_HALFWAY, show10sec: SHOW_10SEC, showSession: SHOW_SESSION, restDur: REST_DUR
+    }));
+  } catch(e) {}
+}
+
+function buildVoiceButtons() {
+  const sel = document.getElementById("voiceSelector");
+  if (!sel) return;
+  sel.innerHTML = "";
+  const dd = document.createElement("select");
+  dd.id = "voiceDropdown";
+  Object.entries(VOICES).forEach(([key, label]) => {
+    const opt = document.createElement("option");
+    opt.value = key;
+    opt.textContent = label;
+    dd.appendChild(opt);
+  });
+  dd.value = VOICE;
+  dd.onchange = () => setVoice(dd.value);
+  sel.appendChild(dd);
+}
+
+function syncCoachDisplay() {
+  document.getElementById("coachName").textContent = VOICES[VOICE] || VOICE;
+  const dd = document.getElementById("voiceDropdown");
+  if (dd) dd.value = VOICE;
+}
+
+function syncToggleDisplay() {
+  document.getElementById("toggle321").classList.toggle("active",     SHOW_321);
+  document.getElementById("toggleHalfway").classList.toggle("active", SHOW_HALFWAY);
+  document.getElementById("toggle10sec").classList.toggle("active",   SHOW_10SEC);
+  document.getElementById("toggle321").textContent     = SHOW_321     ? "ON" : "OFF";
+  document.getElementById("toggleHalfway").textContent = SHOW_HALFWAY ? "ON" : "OFF";
+  document.getElementById("toggle10sec").textContent   = SHOW_10SEC   ? "ON" : "OFF";
+  document.getElementById("toggleSession").classList.toggle("active", SHOW_SESSION);
+  document.getElementById("toggleSession").textContent = SHOW_SESSION ? "ON" : "OFF";
+}
+
+function adjustRestDur(delta) {
+  REST_DUR = Math.max(1, Math.min(30, REST_DUR + delta));
+  saveSettings();
+  syncRestDurDisplay();
+}
+
+function syncRestDurDisplay() {
+  const el = document.getElementById("restDurVal");
+  if (el) el.textContent = REST_DUR + "s";
+}
+
+function setVoice(v) {
+  VOICE = v;
+  saveSettings();
+  syncCoachDisplay();
+}
+
+function toggleSetting(key) {
+  if (key === "321")     SHOW_321     = !SHOW_321;
+  if (key === "halfway") SHOW_HALFWAY = !SHOW_HALFWAY;
+  if (key === "10sec")   SHOW_10SEC   = !SHOW_10SEC;
+  if (key === "session") SHOW_SESSION = !SHOW_SESSION;
+  saveSettings();
+  syncToggleDisplay();
+}
+
+// ─── Rest warn display labels (audio key → short UI text) ────────────────────
+const REST_WARN_LABELS = {
+  "Grab your band":    "Grab your band",
+  "Move to the floor": "Move to the floor",
+  "Time to lie down":  "Lie down",
+  "Time to stand up":  "Stand up",
+};
+
+// ─── Rest warn queue labels (audio key → queue row suffix) ───────────────────
+const REST_WARN_QUEUE = {
+  "Grab your band":    "grab band",
+  "Move to the floor": "move to floor",
+  "Time to lie down":  "lie down",
+  "Time to stand up":  "stand up",
+};
+
+// ─── Cue pools ────────────────────────────────────────────────────────────────
+const SECOND_SIDE_LEFT  = ["Now let's do the left", "Now the other side", "Switch sides", "Other side now"];
+const SECOND_SIDE_RIGHT = ["Now let's do the right", "Now the other side", "Switch sides", "Other side now"];
+const FIRST_SIDE_CUES   = ["first side", "Left side"];
+const COMPLETION_CUES   = ["Finished", "All done", "Exercise completed"];
+const HALFWAY_CUES      = ["Halfway", "That's halfway", "Halfway there.", "Halfway there, keep breathing", "Hold it, you're doing great", "Breathe into it", "Almost there, stay with it", "Good, keep holding", "You're halfway, don't let go"];
+const NUM_WORDS         = {"10":"Ten","20":"Twenty","30":"Thirty","40":"Forty","50":"Fifty","60":"Sixty"};
+const REST_CUES         = ["Rest"];
+const BEGIN_CUES        = ["Starting floor stretch timer"];
+const FINISH_CUES       = ["Great work", "That's it, well done"];
+
+const SESSION_CUES      = ["Session 1","Session 2","Session 3","Session 4","Session 5","Session 6","Session 7","Session 8","Session 9","Session 10","Session 11","Session 12","Session 13","Session 14"];
+
+// ─── Form cues for specific exercises ────────────────────────────────────────
+// Safety-focused coaching for hamstring and spine protection.
+// Always fire at halfway regardless of SHOW_HALFWAY toggle.
+// Also trigger the ±3s suppression window on 10-sec markers.
+const FORM_MAP = {
+  "Standing Forward Bend - back limp, knees soft":            ["Knees soft", "Let gravity do the work"],
+  "Chair Hamstring - Sit tall, hinge forward from hips":                ["Hinge from the hips", "Keep your back flat"],
+  "Forward Bend - Tuck one leg, reach toward the straight foot":        ["Reach with your chest", "Don't round your back"],
+  "Supine Hamstring - Slowly straighten one leg toward ceiling":        ["Press your low back down", "Keep breathing"],
+  "One Leg Up Straight - Use band, keep leg straight":                  ["Keep the leg straight", "Breathe into it"],
+  "Hip Raises - Press hips up and hold":                                ["Squeeze your glutes", "Keep it steady"],
+  "Figure 4 - Foot on other knee, lift back knee toward chest":         ["Keep your shoulders relaxed", "Gentle pull"],
+  "Quad Stretch - Roll onto side, pull foot toward your back":          ["Keep your knees together", "Press your hips forward gently"],
+};
+
+// ─── Helpers ─────────────────────────────────────────────────────────────────
+const cap  = s => s.charAt(0).toUpperCase() + s.slice(1);
+const pick = arr => arr[Math.floor(Math.random() * arr.length)];
+const fmt  = s => {
+  s = Math.floor(s);
+  return s >= 60
+    ? Math.floor(s / 60) + ":" + (s % 60).toString().padStart(2, "0")
+    : "0:" + s.toString().padStart(2, "0");
+};
+
+// ─── Build steps ─────────────────────────────────────────────────────────────
+let STEPS = [];
+function buildSteps() {
+  STEPS = [];
+  EXERCISES.forEach((ex, exIdx) => {
+    const sides   = ex.split ? (ex.split === "ud" ? ["up","down"] : ["left","right"]) : [null];
+    const sideDur = Math.floor(ex.dur / sides.length);
+    sides.forEach((side, si) => {
+      STEPS.push({ type:"exercise", name:ex.name, side, dur:sideDur, exIdx,
+                   isLastSide: si === sides.length - 1 });
+    });
+    if (exIdx < EXERCISES.length - 1) {
+      const nxt = EXERCISES[exIdx + 1];
+      STEPS.push({ type:"rest", dur: nxt.restDur || REST_DUR,
+                   restWarn: nxt.restWarn || false });
+    }
+  });
+}
+
+// ─── Totals ───────────────────────────────────────────────────────────────────
+const totalEx = () => STEPS.filter(s => s.type === "exercise").length;
+const exUpTo  = si => STEPS.slice(0, si + 1).filter(s => s.type === "exercise").length;
+function calcTotalTime() { return STEPS.reduce((sum, s) => sum + s.dur, 0); }
+function updateTotalDisplay() {
+  document.getElementById("totalDurationDisplay").textContent = fmt(calcTotalTime());
+}
+
+// ─── State ────────────────────────────────────────────────────────────────────
+// phase: "idle" | "get-ready" | "announcing" | "exercise" | "rest" | "paused" | "done"
+let phase          = "idle";
+let stepIdx        = 0;
+let tLeft          = 0;
+let halfwayFired   = false;
+let jumpTarget     = -1;
+let ticker         = null;
+let getReadyTicker = null;
+let elapsedSec     = 0;
+let elapsedTicker  = null;
+
+// ─── DOM refs ─────────────────────────────────────────────────────────────────
+const numEl      = document.getElementById("numDisplay");
+const phaseEl    = document.getElementById("phaseLabel");
+const exNumEl    = document.getElementById("exNum");
+const exNameEl   = document.getElementById("exName");
+const exSideEl   = document.getElementById("exSide");
+const statusEl   = document.getElementById("statusMsg");
+const mainBtn    = document.getElementById("mainBtn");
+const progressEl = document.getElementById("progressBar");
+const queueEl    = document.getElementById("queueEl");
+
+// ─── Elapsed / remaining ─────────────────────────────────────────────────────
+function startElapsed() {
+  clearInterval(elapsedTicker);
+  elapsedTicker = setInterval(() => {
+    elapsedSec++;
+    document.getElementById("elapsedDisplay").textContent = fmt(elapsedSec);
+    const rem = Math.max(0, calcTotalTime() - elapsedSec);
+    document.getElementById("remainingDisplay").textContent = fmt(rem);
+  }, 1000);
+}
+
+function stopElapsed() {
+  clearInterval(elapsedTicker);
+  elapsedTicker = null;
+}
+
+function resetElapsed() {
+  stopElapsed();
+  elapsedSec = 0;
+  document.getElementById("elapsedDisplay").textContent = "0:00";
+  document.getElementById("remainingDisplay").textContent = fmt(calcTotalTime());
+}
+
+// ─── Audio ────────────────────────────────────────────────────────────────────
+let audioCtx     = null;
+let masterGain   = null;
+let audioBuffers = {};
+let curSource    = null;
+let pendingEnd   = null;
+
+function getAudioCtx() {
+  if (!audioCtx) {
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    masterGain = audioCtx.createGain();
+    masterGain.gain.value = 1;
+    masterGain.connect(audioCtx.destination);
+  }
+  return audioCtx;
+}
+
+function unlockAudio() {
+  try { getAudioCtx().resume(); } catch(e) {}
+}
+
+async function preloadAudio() {
+  const ctx = getAudioCtx();
+  if (ctx.state === "suspended") await ctx.resume();
+  for (const key of Object.keys(AUDIO_MAP)) {
+    if (audioBuffers[key]) continue;
+    try {
+      const b64    = AUDIO_MAP[key].split(",")[1];
+      const binary = atob(b64);
+      const bytes  = new Uint8Array(binary.length);
+      for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+      audioBuffers[key] = await ctx.decodeAudioData(bytes.buffer);
+    } catch(e) { console.warn("Audio decode failed:", key, e); }
+  }
+}
+
+function playWarmup(done) {
+  const ctx = getAudioCtx();
+  const buf = audioBuffers[cue("starting with a silent warmup")];
+  if (!buf) { if (done) done(); return; }
+  const src  = ctx.createBufferSource();
+  const gain = ctx.createGain();
+  gain.gain.value = 0;
+  src.buffer = buf;
+  src.connect(gain);
+  gain.connect(masterGain);
+  src.onended = () => { if (done) done(); };
+  src.start(0);
+}
+
+function stopAudio() {
+  pendingEnd = null;
+  if (curSource) { try { curSource.stop(); } catch(e) {} curSource = null; }
+}
+
+function playAudio(key, onEnd) {
+  stopAudio();
+  const ctx = getAudioCtx();
+  const buf = audioBuffers[key];
+  if (!buf) { if (onEnd) onEnd(); return; }
+  const src  = ctx.createBufferSource();
+  src.buffer = buf;
+  src.connect(masterGain);
+  curSource  = src;
+  pendingEnd = onEnd;
+  src.onended = () => {
+    if (curSource === src) {
+      curSource  = null;
+      const cb   = pendingEnd;
+      pendingEnd = null;
+      if (cb) cb();
+    }
+  };
+  src.start(0);
+}
+
+function playSequence(keys, done) {
+  const rem = [...keys];
+  function next() {
+    if (!rem.length) { if (done) done(); return; }
+    playAudio(rem.shift(), next);
+  }
+  next();
+}
+
+// ─── Button state helpers ─────────────────────────────────────────────────────
+function setBtnRunning() {
+  mainBtn.textContent      = "Pause";
+  mainBtn.style.background = "var(--green)";
+  mainBtn.style.color      = "#fff";
+}
+
+function setBtnPaused() {
+  mainBtn.textContent      = "Resume";
+  mainBtn.style.background = "var(--accent)";
+  mainBtn.style.color      = "#fff";
+}
+
+function setBtnStart() {
+  mainBtn.textContent      = "Start";
+  mainBtn.style.background = "var(--accent)";
+  mainBtn.style.color      = "#fff";
+  mainBtn.style.display    = "";
+}
+
+// ─── Progress ─────────────────────────────────────────────────────────────────
+function updateProgress() {
+  const done = STEPS.slice(0, stepIdx).filter(s => s.type === "exercise").length;
+  progressEl.style.width = (done / totalEx() * 100) + "%";
+}
+
+// ─── Display ──────────────────────────────────────────────────────────────────
+function showStep(si) {
+  const s = STEPS[si];
+  if (!s) return;
+  if (s.type === "exercise") {
+    exNumEl.textContent  = `Exercise ${exUpTo(si)} of ${totalEx()}`;
+    exNameEl.textContent = s.name;
+    exSideEl.textContent = s.side ? cap(s.side) + " side" : "";
+    phaseEl.textContent  = "";
+    phaseEl.style.color  = "var(--accent)";
+  } else {
+    exNumEl.textContent  = "Rest";
+    exNameEl.textContent = s.restWarn ? REST_WARN_LABELS[s.restWarn] || s.restWarn : "";
+    exSideEl.textContent = "";
+    phaseEl.textContent  = "Rest";
+    phaseEl.style.color  = "var(--rest)";
+  }
+}
+
+// ─── Queue ────────────────────────────────────────────────────────────────────
+function buildQueue() {
+  queueEl.innerHTML = "";
+  let i = 0;
+  while (i < STEPS.length) {
+    const s           = STEPS[i];
+    const rowFirstIdx = i;
+    let label, time, isRest = false;
+
+    if (s.type === "rest") {
+      const suffix = s.restWarn ? " — " + (REST_WARN_QUEUE[s.restWarn] || s.restWarn) : "";
+      label  = "Rest" + suffix;
+      time   = s.dur + "s";
+      isRest = true;
+      i++;
+    } else {
+      const ex        = EXERCISES[s.exIdx];
+      const badge     = ex.split === "ud" ? " <small>U/D</small>" : ex.split ? "<small> L/R</small>" : "";
+      label           = ex.name + badge;
+      time            = fmt(ex.dur);
+      const thisExIdx = s.exIdx;
+      while (i < STEPS.length && STEPS[i].type === "exercise" && STEPS[i].exIdx === thisExIdx) i++;
+    }
+
+    const rowLastIdx = i - 1;
+    let cls = "q-item";
+    if (rowLastIdx < stepIdx)                                    cls += " completed";
+    else if (stepIdx >= rowFirstIdx && stepIdx <= rowLastIdx)    cls += " current";
+    else                                                         cls += " upcoming";
+    if (isRest) cls += " rest-item";
+
+    const div     = document.createElement("div");
+    div.className = cls;
+    div.innerHTML = `<span class="q-name">${label}</span><span class="q-time">${time}</span>`;
+
+    const jumpTo    = rowFirstIdx;
+    let touchStartX = 0, touchStartY = 0;
+    div.addEventListener("touchstart", e => {
+      touchStartX = e.touches[0].clientX;
+      touchStartY = e.touches[0].clientY;
+    }, { passive: true });
+    div.addEventListener("touchend", e => {
+      const dx = Math.abs(e.changedTouches[0].clientX - touchStartX);
+      const dy = Math.abs(e.changedTouches[0].clientY - touchStartY);
+      if (dx < 8 && dy < 8) queueClick(jumpTo);
+    }, { passive: true });
+    div.addEventListener("click", () => queueClick(jumpTo));
+    queueEl.appendChild(div);
+  }
+
+  const cur = queueEl.querySelector(".current");
+  setTimeout(() => {
+    const cur = queueEl.querySelector(".current");
+    const scroller = document.getElementById("queueScroll");
+    if (scroller && cur) {
+      scroller.scrollTo({ top: cur.offsetTop - scroller.offsetTop, behavior: "smooth" });
+    }
+  }, 0);
+}
+
+// ─── Queue jump ───────────────────────────────────────────────────────────────
+function queueClick(i) {
+  if (i === stepIdx && phase === "exercise") return;
+  clearInterval(ticker);         ticker = null;
+  clearInterval(getReadyTicker); getReadyTicker = null;
+  stopAudio();
+  stopElapsed();
+  jumpTarget           = -1;
+  statusEl.textContent = "";
+  unlockAudio();
+  phase = "idle";
+  if (Object.keys(audioBuffers).length === 0) {
+    preloadAudio().then(() => { startElapsed(); startStep(i); });
+  } else {
+    startElapsed();
+    startStep(i);
+  }
+}
+
+// ─── Main tap handler ─────────────────────────────────────────────────────────
+function ringTap() {
+  if (phase === "idle") {
+    unlockAudio();
+    const target         = jumpTarget >= 0 ? jumpTarget : 0;
+    jumpTarget           = -1;
+    statusEl.textContent = "";
+    phase                = "get-ready";
+    setBtnRunning();
+    preloadAudio().then(() => {
+      if (phase !== "get-ready") return;
+      startElapsed();
+      if (target === 0) {
+        playWarmup(() => {
+        playSequence([cue(pick(BEGIN_CUES)), cue("Get ready to stand")], () => {
+          if (phase !== "get-ready") return;
+          const startCountdown = () => {
+            if (phase !== "get-ready") return;
+            let countdown        = GET_READY_DUR;
+            numEl.textContent    = fmt(countdown);
+            exNumEl.textContent  = "Get Ready";
+            exNameEl.textContent = "Starting in...";
+            exSideEl.textContent = "";
+            phaseEl.textContent  = "GET READY";
+            phaseEl.style.color  = "var(--accent)";
+            getReadyTicker = setInterval(() => {
+              countdown--;
+              numEl.textContent = fmt(countdown);
+              if (countdown === 4) playAudio(cue("Three...... two...... one"), null);
+              if (countdown <= 0) {
+                clearInterval(getReadyTicker);
+                getReadyTicker = null;
+                if (phase === "get-ready") startStep(0);
+              }
+            }, 1000);
+          };
+          if (SHOW_SESSION) {
+            const n = Math.min(getSessionCount() + 1, 14);
+            playAudio(cue("Session " + n), startCountdown);
+          } else {
+            startCountdown();
+          }
+        });
+        }); // end playWarmup
+      } else {
+        startStep(target);
+      }
+    });
+
+  } else if (phase === "exercise" || phase === "rest" || phase === "announcing" || phase === "get-ready") {
+    clearInterval(ticker);         ticker = null;
+    clearInterval(getReadyTicker); getReadyTicker = null;
+    stopAudio();
+    stopElapsed();
+    phase                = "paused";
+    setBtnPaused();
+    statusEl.textContent = "Paused";
+
+  } else if (phase === "paused") {
+    statusEl.textContent = "";
+    if (jumpTarget >= 0) {
+      const t    = jumpTarget;
+      jumpTarget = -1;
+      phase      = "idle";
+      startElapsed();
+      startStep(t);
+      return;
+    }
+    phase = STEPS[stepIdx].type === "rest" ? "rest" : "exercise";
+    setBtnRunning();
+    startElapsed();
+    runTick();
+
+  } else if (phase === "done") {
+    if (jumpTarget >= 0) {
+      const t    = jumpTarget;
+      jumpTarget = -1;
+      unlockAudio();
+      startElapsed();
+      startStep(t);
+    }
+  }
+}
+
+// ─── Step runner ──────────────────────────────────────────────────────────────
+function startStep(si) {
+  stepIdx = si;
+  const s = STEPS[si];
+  showStep(si);
+  buildQueue();
+  updateProgress();
+
+  if (s.type === "exercise") {
+    halfwayFired      = false;
+    tLeft             = s.dur;
+    numEl.textContent = fmt(tLeft);
+    phase             = "announcing";
+    setBtnRunning();
+
+    const isSecondSide = s.side
+      && stepIdx > 0
+      && STEPS[stepIdx - 1].type === "exercise"
+      && STEPS[stepIdx - 1].exIdx === s.exIdx;
+
+    const keys = [];
+    if (isSecondSide) {
+      keys.push(cue(pick(s.side === "left" ? SECOND_SIDE_LEFT : SECOND_SIDE_RIGHT)));
+    } else {
+      keys.push(cue(s.name));
+      if (s.side) keys.push(cue(pick(FIRST_SIDE_CUES)));
+    }
+
+    playSequence(keys, () => {
+      if (phase !== "announcing") return;
+      phase = "exercise";
+      setBtnRunning();
+      runTick();
+    });
+
+  } else {
+    tLeft             = s.dur;
+    numEl.textContent = fmt(tLeft);
+    phase             = "rest";
+    setBtnRunning();
+
+    const rkeys = s.restWarn
+      ? [cue(pick(REST_CUES)), cue(s.restWarn)]
+      : [cue(pick(REST_CUES))];
+
+    playSequence(rkeys, () => {
+      if (phase !== "rest") return;
+      runTick();
+    });
+  }
+}
+
+// ─── Tick ─────────────────────────────────────────────────────────────────────
+function runTick() {
+  clearInterval(ticker);
+  ticker = setInterval(() => {
+    tLeft--;
+    const tShow       = Math.max(0, tLeft);
+    numEl.textContent = fmt(tShow);
+    const s           = STEPS[stepIdx];
+
+    if (s.type === "exercise") {
+      const halfwayPoint = Math.floor(s.dur / 2);
+      const isFormCue    = !!FORM_MAP[s.name];
+      // Mid-cue fires if: form-mapped exercise (always) OR halfway toggle ON and hold > 20s
+      const midCueFires  = isFormCue || (SHOW_HALFWAY && s.dur > 20);
+
+      // ── Mid-hold cue ──────────────────────────────────────────
+      if (!halfwayFired && tLeft === halfwayPoint) {
+        halfwayFired = true;
+        if (isFormCue) {
+          // Exercise-specific safety cues always fire
+          playAudio(cue(pick(FORM_MAP[s.name])), null);
+        } else if (s.dur > 20 && SHOW_HALFWAY) {
+          playAudio(cue(pick(HALFWAY_CUES)), null);
+        }
+      }
+
+      // ── 10-second markers ─────────────────────────────────────
+      if (SHOW_10SEC && s.dur > 15 && tLeft > 0 && tLeft % 10 === 0) {
+        const nearMid = midCueFires && Math.abs(tLeft - halfwayPoint) <= 3;
+        if (!nearMid) playAudio(cue(NUM_WORDS[String(tLeft)] || String(tLeft)), null);
+      }
+
+      // ── 3-2-1 countdown ───────────────────────────────────────
+      if (SHOW_321) {
+        if (tLeft === 4) playAudio(cue("Three...... two...... one"), null);
+      }
+    }
+
+    if (tLeft <= 0) {
+      clearInterval(ticker);
+      ticker = null;
+      onStepEnd();
+    }
+  }, 1000);
+}
+
+// ─── Step end ─────────────────────────────────────────────────────────────────
+function onStepEnd() {
+  if (phase !== "exercise" && phase !== "rest") return;
+  const nxt = stepIdx + 1;
+  if (nxt < STEPS.length) startStep(nxt); else finishAll();
+}
+
+// ─── Finish ───────────────────────────────────────────────────────────────────
+function finishAll() {
+  phase = "done";
+  incrementSession();
+  stopElapsed();
+  stopAudio();
+  clearInterval(ticker);
+  ticker               = null;
+  numEl.textContent    = "✓";
+  exNumEl.textContent  = "Complete";
+  exNameEl.textContent = "Well done";
+  exSideEl.textContent = "All stretches complete";
+  phaseEl.textContent  = "";
+  statusEl.textContent = "";
+  progressEl.style.width = "100%";
+  mainBtn.style.display  = "none";
+  playSequence([cue(pick(COMPLETION_CUES)), cue(pick(FINISH_CUES))], null);
+}
+
+// ─── Reset ────────────────────────────────────────────────────────────────────
+function resetTimer() {
+  clearInterval(ticker);         ticker = null;
+  clearInterval(getReadyTicker); getReadyTicker = null;
+  stopAudio();
+  stopElapsed();
+  stepIdx      = 0;
+  tLeft        = 0;
+  phase        = "idle";
+  halfwayFired = false;
+  jumpTarget   = -1;
+
+  numEl.textContent    = "0:00";
+  phaseEl.textContent  = "";
+  exNumEl.textContent  = "Ready";
+  exNameEl.textContent = "FLOOR STRETCH";
+  exSideEl.textContent = "";
+  statusEl.textContent = "";
+  progressEl.style.width = "0%";
+  setBtnStart();
+  resetElapsed();
+  buildQueue();
+}
+
+// ─── Edit panel ───────────────────────────────────────────────────────────────
+let editDragSrc = null;
+let touchDragRow = null;
+let touchPlaceholder = null;
+let touchOriginMarker = null;
+let touchOffsetY = 0;
+let touchScrollTimer = null;
+
+function touchDragCleanup() {
+  if (touchDragRow) {
+    touchDragRow.classList.remove("dragging");
+    touchDragRow.style.position = "";
+    touchDragRow.style.top = "";
+    touchDragRow.style.left = "";
+    touchDragRow.style.zIndex = "";
+    touchDragRow.style.width = "";
+  }
+  if (touchPlaceholder && touchPlaceholder.parentNode) touchPlaceholder.parentNode.removeChild(touchPlaceholder);
+  if (touchOriginMarker && touchOriginMarker.parentNode) touchOriginMarker.parentNode.removeChild(touchOriginMarker);
+  if (touchScrollTimer) { clearInterval(touchScrollTimer); touchScrollTimer = null; }
+  touchDragRow = null; touchPlaceholder = null; touchOriginMarker = null;
+}
+
+function openSettings() {
+  syncCoachDisplay();
+  syncToggleDisplay();
+  syncRestDurDisplay();
+  document.getElementById("settingsOverlay").classList.add("open");
+}
+
+function closeSettings() {
+  document.getElementById("settingsOverlay").classList.remove("open");
+}
+
+function openEdit() {
+  const list = document.getElementById("editList");
+  list.innerHTML = "";
+  EXERCISES.forEach(ex => {
+    const row     = document.createElement("div");
+    row.className = "edit-row";
+
+    const hasLR   = ex.split === "lr" || ex.split === "ud";
+    row.innerHTML = `
+      <span class="edit-drag">☰</span>
+      <span class="edit-name">${ex.name}</span>
+      <input class="edit-dur" type="number" min="5" max="300" value="${ex.dur}">
+      <span class="edit-dur-label">sec</span>
+      <button class="edit-split${hasLR ? " active" : ""}" data-split="${ex.split || ""}">${ex.split === "ud" ? "U/D" : ex.split === "lr" ? "L/R" : "—"}</button>
+      <button class="btn-del">✕</button>
+    `;
+    const handle = row.querySelector(".edit-drag");
+    handle.addEventListener("touchstart", e => {
+      e.preventDefault();
+      const touch = e.touches[0];
+      const rect = row.getBoundingClientRect();
+      touchOffsetY = touch.clientY - rect.top;
+      touchDragRow = row;
+      touchOriginMarker = document.createElement("div");
+      touchOriginMarker.className = "edit-origin-marker";
+      touchOriginMarker.style.height = rect.height + "px";
+      row.parentNode.insertBefore(touchOriginMarker, row);
+      touchPlaceholder = document.createElement("div");
+      touchPlaceholder.className = "edit-placeholder";
+      touchPlaceholder.style.height = rect.height + "px";
+      row.parentNode.insertBefore(touchPlaceholder, row);
+      row.style.setProperty("--drag-width", rect.width + "px");
+      row.classList.add("dragging");
+      row.style.position = "fixed";
+      row.style.top = rect.top + "px";
+      row.style.left = rect.left + "px";
+      row.style.width = rect.width + "px";
+      row.style.zIndex = "200";
+    }, { passive: false });
+    handle.addEventListener("touchmove", e => {
+      if (!touchDragRow) return;
+      e.preventDefault();
+      const y = e.touches[0].clientY;
+      touchDragRow.style.top = (y - touchOffsetY) + "px";
+      const listRect = list.getBoundingClientRect();
+      if (touchScrollTimer) { clearInterval(touchScrollTimer); touchScrollTimer = null; }
+      if (y < listRect.top + 40) touchScrollTimer = setInterval(() => { list.scrollTop -= 8; }, 16);
+      else if (y > listRect.bottom - 40) touchScrollTimer = setInterval(() => { list.scrollTop += 8; }, 16);
+      const rows = Array.from(list.children).filter(r => r !== touchDragRow && r !== touchPlaceholder && r !== touchOriginMarker);
+      let inserted = false;
+      for (const r of rows) {
+        const rRect = r.getBoundingClientRect();
+        if (y < rRect.top + rRect.height / 2) { list.insertBefore(touchPlaceholder, r); inserted = true; break; }
+      }
+      if (!inserted) list.appendChild(touchPlaceholder);
+    }, { passive: false });
+    handle.addEventListener("touchend", () => {
+      if (!touchDragRow) return;
+      if (touchPlaceholder && touchPlaceholder.parentNode) touchPlaceholder.parentNode.insertBefore(touchDragRow, touchPlaceholder);
+      touchDragCleanup();
+    });
+    handle.addEventListener("touchcancel", () => { touchDragCleanup(); });
+    // Mouse drag on handle (desktop)
+    handle.addEventListener("mousedown", e => {
+      e.preventDefault();
+      const rect = row.getBoundingClientRect();
+      const offsetY = e.clientY - rect.top;
+      touchDragRow = row;
+      touchOriginMarker = document.createElement("div");
+      touchOriginMarker.className = "edit-origin-marker";
+      touchOriginMarker.style.height = rect.height + "px";
+      row.parentNode.insertBefore(touchOriginMarker, row);
+      touchPlaceholder = document.createElement("div");
+      touchPlaceholder.className = "edit-placeholder";
+      touchPlaceholder.style.height = rect.height + "px";
+      row.parentNode.insertBefore(touchPlaceholder, row);
+      row.style.setProperty("--drag-width", rect.width + "px");
+      row.classList.add("dragging");
+      row.style.position = "fixed";
+      row.style.top = rect.top + "px";
+      row.style.left = rect.left + "px";
+      row.style.width = rect.width + "px";
+      row.style.zIndex = "200";
+      function onMouseMove(ev) {
+        const y = ev.clientY;
+        touchDragRow.style.top = (y - offsetY) + "px";
+        const listRect = list.getBoundingClientRect();
+        if (touchScrollTimer) { clearInterval(touchScrollTimer); touchScrollTimer = null; }
+        if (y < listRect.top + 40) touchScrollTimer = setInterval(() => { list.scrollTop -= 8; }, 16);
+        else if (y > listRect.bottom - 40) touchScrollTimer = setInterval(() => { list.scrollTop += 8; }, 16);
+        const rows = Array.from(list.children).filter(r => r !== touchDragRow && r !== touchPlaceholder && r !== touchOriginMarker);
+        let ins = false;
+        for (const r of rows) {
+          const rr = r.getBoundingClientRect();
+          if (y < rr.top + rr.height / 2) { list.insertBefore(touchPlaceholder, r); ins = true; break; }
+        }
+        if (!ins) list.appendChild(touchPlaceholder);
+      }
+      function onMouseUp() {
+        document.removeEventListener("mousemove", onMouseMove);
+        document.removeEventListener("mouseup", onMouseUp);
+        if (touchDragRow && touchPlaceholder && touchPlaceholder.parentNode) {
+          touchPlaceholder.parentNode.insertBefore(touchDragRow, touchPlaceholder);
+        }
+        touchDragCleanup();
+      }
+      document.addEventListener("mousemove", onMouseMove);
+      document.addEventListener("mouseup", onMouseUp);
+    });
+    row.querySelector(".btn-del").addEventListener("click", () => row.remove());
+    row.querySelector(".edit-split").addEventListener("click", function() {
+      const cur = this.dataset.split;
+      if (!cur)              { this.dataset.split = "lr"; this.textContent = "L/R"; this.classList.add("active"); }
+      else if (cur === "lr") { this.dataset.split = "ud"; this.textContent = "U/D"; }
+      else                   { this.dataset.split = "";   this.textContent = "—";   this.classList.remove("active"); }
+    });
+    list.appendChild(row);
+  });
+  document.getElementById("editOverlay").classList.add("open");
+}
+
+function closeEdit() {
+  document.getElementById("editOverlay").classList.remove("open");
+}
+
+function applyEdit() {
+  const rows  = document.querySelectorAll("#editList .edit-row");
+  const newEx = [];
+  rows.forEach(row => {
+    const name     = row.querySelector(".edit-name").textContent;
+    const dur      = Math.max(5, parseInt(row.querySelector(".edit-dur").value) || 30);
+    const splitVal = row.querySelector(".edit-split").dataset.split || false;
+    const orig     = EXERCISES.find(e => e.name === name) || {};
+    newEx.push({ name, dur, split: splitVal,
+                 restDur: orig.restDur || REST_DUR, restWarn: orig.restWarn || false });
+  });
+  EXERCISES = newEx;
+  buildSteps();
+  updateTotalDisplay();
+  closeEdit();
+  resetTimer();
+}
+
+// ─── Init ─────────────────────────────────────────────────────────────────────
+loadSettings();
+buildSteps();
+
+function updateQueueTop() {
+  const fh = document.querySelector(".fixed-top").offsetHeight;
+  const qs = document.getElementById("queueSection");
+  qs.style.paddingTop = (fh + 12) + "px";
+}
+window.addEventListener("load", function() {
+  buildVoiceButtons();
+  syncCoachDisplay();
+  syncToggleDisplay();
+  syncRestDurDisplay();
+  updateTotalDisplay();
+  document.getElementById("remainingDisplay").textContent = fmt(calcTotalTime());
+  updateQueueTop();
+  buildQueue();
+});
+new ResizeObserver(updateQueueTop).observe(document.querySelector(".fixed-top"));
+
+// ─── Screen Wake Lock ─────────────────────────────────────────────────────────
+let wakeLock = null;
+async function requestWakeLock() {
+  try {
+    if (wakeLock !== null) return;
+    wakeLock = await navigator.wakeLock.request('screen');
+    wakeLock.addEventListener('release', () => { wakeLock = null; });
+  } catch(e) { wakeLock = null; }
+}
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'visible') requestWakeLock();
+});
+requestWakeLock();
+setInterval(() => { if (document.visibilityState === 'visible' && !wakeLock) requestWakeLock(); }, 30000);
+</script>
+</body>
+</html>
