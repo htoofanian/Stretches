@@ -1,5 +1,5 @@
 Stretch, TRX and balance exercises with voice coaches and timers.
-HTML files with embedded audio.  For phones.  On iphone or ipad, the link below should be saved to your home page for use.
+HTML files with embedded audio.  For phones.  On iphone or ipad, open the link below in your browser and save it to your home page.
 
 These exercises can be edited to change duration and order, or to remove exercises. Exercises cannot be renamed or added, as the audio for the exercises is preloaded and fixed.  Edits will save and willbe cached locally to each device.  They will not change the original files on github.
 
