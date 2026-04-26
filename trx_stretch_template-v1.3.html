@@ -1,0 +1,2944 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+<title>TRX STRETCH</title>
+<!-- trx_stretch_template-v1.2.html -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Karla:wght@500;600;700;800&family=DM+Sans:wght@400;500;600;700&family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,700;1,9..144,700&family=Instrument+Serif:ital@0;1&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Archivo:wght@400;500;600;700;800;900&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    /* Theme: warm-red (default) */
+    --bg: #fcf4e3;
+    --surface: #fff;
+    --ink: #1a1510;
+    --accent: #cc0000;
+    --accent-soft: rgba(204,0,0,0.12);
+    --track: #ddd5c8;
+    --border: #d1d1d6;
+    --done: #5a8a4a;
+    --rest: #3d6e99;
+    --rest-soft: rgba(61,110,153,0.12);
+    --green: #27AE60;
+    --muted: #b0a99c;
+
+    /* Typography slots */
+    --font-display: 'DM Sans', sans-serif;
+    --font-body: 'Work Sans', 'Inter', system-ui, sans-serif;
+    --font-numeric: 'Karla', sans-serif;
+    --timer-font: 'Karla', sans-serif;
+    --timer-weight: 600;
+
+    /* Shape */
+    --radius-card: 1.5rem;
+    --radius-item: 0.75rem;
+    --radius-btn: 999px;
+    --card-border: 2px;
+
+    /* Accent effects (off by default) */
+    --paper-grain: none;
+  }
+
+  /* ── Theme: sunset (deeper orange/red on cream) ─────────────── */
+  body[data-theme="sunset"] {
+    --bg: #f7ecd4;
+    --surface: #fffaf0;
+    --ink: #2a1810;
+    --accent: #d94b1f;
+    --accent-soft: rgba(217,75,31,0.14);
+    --track: #e0d3b8;
+    --border: #d9ccb3;
+    --rest: #6b4a2b;
+    --rest-soft: rgba(107,74,43,0.12);
+    --muted: #a89a80;
+  }
+
+  /* ── Theme: clay (terracotta + bone) ───────────────────────── */
+  body[data-theme="clay"] {
+    --bg: #efe4d0;
+    --surface: #faf2e0;
+    --ink: #2d1d14;
+    --accent: #b84420;
+    --accent-soft: rgba(184,68,32,0.13);
+    --track: #d9c9ab;
+    --border: #d0bfa0;
+    --rest: #5a7a5c;
+    --rest-soft: rgba(90,122,92,0.14);
+    --muted: #a79879;
+  }
+
+  /* ── Theme: ember (dark warm mode) ─────────────────────────── */
+  body[data-theme="ember"] {
+    --bg: #1c140d;
+    --surface: #2a1f16;
+    --ink: #f2e6cf;
+    --accent: #ff6b3d;
+    --accent-soft: rgba(255,107,61,0.18);
+    --track: #3a2a1c;
+    --border: #3f2e20;
+    --rest: #e0a84a;
+    --rest-soft: rgba(224,168,74,0.16);
+    --muted: #8a7a65;
+  }
+
+  /* ── Theme: paper (off-white, minimal) ─────────────────────── */
+  body[data-theme="paper"] {
+    --bg: #f4eee1;
+    --surface: #ffffff;
+    --ink: #141210;
+    --accent: #c23030;
+    --accent-soft: rgba(194,48,48,0.10);
+    --track: #ddd5c8;
+    --border: #e6ddc9;
+    --rest: #5a5a5a;
+    --rest-soft: rgba(90,90,90,0.10);
+    --muted: #a89f8a;
+  }
+
+  /* ── Typography families ────────────────────────────────────── */
+  body[data-type="editorial"] {
+    --font-display: 'Fraunces', 'DM Sans', serif;
+    --font-body: 'Inter', system-ui, sans-serif;
+    --font-numeric: 'Fraunces', 'Karla', serif;
+  }
+  body[data-type="technical"] {
+    --font-display: 'Space Grotesk', 'DM Sans', sans-serif;
+    --font-body: 'Space Grotesk', 'Inter', sans-serif;
+    --font-numeric: 'JetBrains Mono', 'Karla', monospace;
+  }
+  body[data-type="athletic"] {
+    --font-display: 'Archivo', 'DM Sans', sans-serif;
+    --font-body: 'Archivo', 'Inter', sans-serif;
+    --font-numeric: 'Archivo', 'Karla', sans-serif;
+  }
+  body[data-type="serif-mix"] {
+    --font-display: 'Instrument Serif', 'DM Sans', serif;
+    --font-body: 'Inter', system-ui, sans-serif;
+    --font-numeric: 'Instrument Serif', 'Karla', serif;
+  }
+
+  /* ── Shape density ──────────────────────────────────────────── */
+  body[data-shape="soft"] {
+    --radius-card: 1.75rem;
+    --radius-item: 1rem;
+    --radius-btn: 999px;
+    --card-border: 2px;
+  }
+  body[data-shape="crisp"] {
+    --radius-card: 0.5rem;
+    --radius-item: 0.25rem;
+    --radius-btn: 4px;
+    --card-border: 2px;
+  }
+  body[data-shape="stamp"] {
+    --radius-card: 0px;
+    --radius-item: 0px;
+    --radius-btn: 0px;
+    --card-border: 1.5px;
+  }
+
+  /* ── Paper grain background ─────────────────────────────────── */
+  body[data-grain="on"] {
+    background-image:
+      radial-gradient(rgba(0,0,0,0.035) 1px, transparent 1px),
+      radial-gradient(rgba(0,0,0,0.02) 1px, transparent 1px);
+    background-size: 3px 3px, 7px 7px;
+    background-position: 0 0, 1px 1px;
+  }
+  body[data-grain="on"][data-theme="ember"] {
+    background-image:
+      radial-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+      radial-gradient(rgba(255,255,255,0.015) 1px, transparent 1px);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: var(--font-body);
+    background: var(--bg);
+    height: 100dvh;
+    display: flex;
+
+
+
+
+    flex-direction: column;
+    align-items: center;
+    overflow: hidden;
+  }
+
+  /* ── Fixed top section ─────────────────────────────────────── */
+  .fixed-top {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 10;
+    background: var(--bg);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.7rem;
+    padding: 1.75rem 1rem 0.9rem;
+  }
+
+  h1 {
+    font-family: var(--title-font, var(--font-display));
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--accent);
+    letter-spacing: 1px;
+    line-height: 1;
+    text-align: center;
+    margin: 0;
+  }
+
+  .timers-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    width: 100%;
+    max-width: 380px;
+    margin: 0;
+  }
+
+  .timer-box {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1em;
+    flex: 1;
+  }
+  .timer-box:first-child { align-items: flex-start; }
+  .timer-box:nth-child(2) { align-items: center; }
+  .timer-box:last-child  { align-items: flex-end; }
+
+  .timer-label {
+    font-size: 0.8rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-weight: var(--timer-label-weight, 400);
+    color: var(--ink);
+    font-family: var(--timer-label-font, var(--font-body));
+  }
+
+  .timer-val {
+    font-size: 1.5rem;
+    font-weight: var(--timer-weight, 700);
+    color: var(--ink);
+    font-family: var(--timer-font, var(--font-numeric));
+    letter-spacing: -0.02em;
+    line-height: 1;
+  }
+
+  .total-duration {
+    font-size: 1.5rem;
+    font-weight: var(--timer-weight, 700);
+    color: var(--ink);
+    font-family: var(--timer-font, var(--font-numeric));
+    letter-spacing: -0.02em;
+    line-height: 1;
+  }
+
+  .edit-row-outer {
+    display: flex;
+    justify-content: center;
+    gap: 1.2rem;
+    width: 100%;
+    max-width: 380px;
+    margin: 0;
+  }
+
+  .btn-edit {
+    min-width: 5.5rem;
+    background: var(--surface);
+    border: 1.5px solid var(--ink);
+    color: var(--ink);
+    font-size: 12px;
+    font-family: var(--font-display);
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 6px 14px;
+    border-radius: var(--radius-btn);
+    cursor: pointer;
+    transition: transform 0.12s;
+    text-align: center;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+  }
+  .btn-save {
+    min-width: 5.5rem;
+    background: var(--rest);
+    border: 1.5px solid var(--ink);
+    color: #fff;
+    font-size: 12px;
+    font-family: var(--font-display);
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 6px 14px;
+    border-radius: var(--radius-btn);
+    cursor: pointer;
+    transition: transform 0.12s;
+    text-align: center;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+  }
+  .btn-save:active { transform: scale(0.97); }
+
+  /* Save popup */
+  .save-popup-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 400; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.2s; padding: 20px; }
+  .save-popup-overlay.visible { opacity: 1; pointer-events: all; }
+  .save-popup { background: var(--surface); border-radius: 1.5rem; padding: 20px; width: 100%; max-width: 320px; transform: translateY(20px); transition: transform 0.2s; }
+  .save-popup-overlay.visible .save-popup { transform: translateY(0); }
+  .save-popup h3 { font-family: var(--title-font, var(--font-display)); font-size: 20px; letter-spacing: 2px; color: var(--accent); margin-bottom: 8px; text-align: center; text-transform: uppercase; }
+  .save-popup-btns { display: flex; flex-direction: column; gap: 8px; }
+  .save-popup-btns button { width: 100%; padding: 6px 14px; border-radius: var(--radius-btn); border: 1.5px solid var(--ink); font-family: var(--font-display); font-size: 12px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; cursor: pointer; transition: all 0.15s; line-height: 1; }
+  .save-popup-btns button:active { transform: scale(0.97); }
+  .btn-save-local { background: var(--bg); color: var(--ink); }
+  .btn-save-download { background: var(--rest); color: #fff; }
+  .btn-save-cancel { background: var(--bg); color: var(--ink); }
+  .save-filename-row { margin-bottom: 14px; }
+  .save-filename-row label { font-size: 13px; color: var(--rest); font-weight: 600; display: block; margin-bottom: 4px; }
+  .save-filename-input { width: 100%; border: 1.5px solid var(--border); border-radius: 8px; padding: 8px 10px; font-family: var(--font-display); font-size: 14px; color: var(--ink); background: var(--bg); outline: none; }
+  .save-filename-input:focus { border-color: var(--rest); }
+
+  /* ── Coach display ──────────────────────────────────────────── */
+  .coach-row {
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink);
+    text-align: center;
+    line-height: 1.3;
+  }
+  .coach-label { opacity: 1; }
+  #coachName   { color: var(--accent); }
+
+  /* ── Voice selector (in edit panel) ────────────────────────── */
+  .voice-selector select {
+    padding: 0.35rem 2.2rem 0.35rem 1rem; min-width: 8rem; border-radius: 50px; border: 1.5px solid var(--border);
+    background: var(--bg); font-family: var(--font-body); font-size: 0.85rem; font-weight: 600;
+    color: var(--ink); cursor: pointer;
+    -webkit-appearance: none; appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%231a1510' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.7rem center;
+  }
+  .voice-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.6rem 1.1rem;
+    width: 100%;
+    max-width: 300px;
+    margin: 0 auto 0.25rem;
+  }
+  .voice-btn {
+    background: var(--surface);
+    border: 1.5px solid var(--border);
+    color: var(--ink);
+    padding: 9px 14px;
+    border-radius: var(--radius-btn);
+    text-align: center;
+    line-height: 1;
+  }
+  .voice-btn.active {
+    background: var(--rest);
+    color: #fff;
+    border-color: var(--rest);
+  }
+  .voice-btn:active { transform: scale(0.97); }
+  .voice-label {
+    font-size: 0.75rem;
+    font-weight: 700;
+    font-family: var(--font-display);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink);
+    text-align: center;
+  }
+  .voice-section-label {
+    font-size: 0.75rem;
+    font-weight: 700;
+    font-family: var(--font-display);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink);
+    text-align: center;
+  }
+
+  /* ── Notice toggles ─────────────────────────────────────────── */
+.toggle-rows {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 340px;
+    margin: 0 auto;
+    background: var(--surface);
+    border: 1.5px solid var(--border);
+    border-radius: 0.75rem;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    flex: 1;
+    min-height: 16;
+  }
+  .toggle-rows::-webkit-scrollbar { width: 3px; }
+  .toggle-rows::-webkit-scrollbar-thumb { background: var(--track); border-radius: 2px; }
+
+  .toggle-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.7rem 1.1rem 0.7rem 1.3rem;
+    border-bottom: 1px solid var(--track);
+  }
+  .toggle-row:last-child {
+    border-bottom: none;
+  }
+  .toggle-label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--ink);
+    font-family: var(--font-body);
+  }
+  .btn-toggle {
+    min-width: 46px;
+    padding: 6px 14px;
+    border-radius: var(--radius-btn);
+    border: 1.5px solid #b0a99c;
+    background: var(--surface);
+    font-family: var(--font-display);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    color: #b0a99c;
+    cursor: pointer;
+    transition: transform 0.12s;
+    text-align: center;
+  }
+  .btn-toggle:active { transform: scale(0.95); }
+  .btn-toggle.active {
+    background: var(--rest);
+    border-color: var(--ink);
+    color: white;
+  }
+  .btn-adjust {
+    width: 24px;
+    height: 24px;
+    padding: 0;
+    border-radius: 999px;
+    border: 1.5px solid #b0a99c;
+    background: var(--surface);
+    color: #b0a99c;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: transform 0.12s;
+  }
+  .btn-adjust:active { transform: scale(0.95); }
+
+  .progress-bar-wrap {
+    width: 100%;
+    max-width: 380px;
+    height: 5px;
+    background: var(--progress-track, #ddd5c8);
+    border-radius: 4px;
+    margin-top: 0.3rem;
+    margin-bottom: 0.2rem;
+  }
+
+  .progress-bar-fill {
+    height: 100%;
+    background: var(--rest);
+    border-radius: 4px;
+    transition: width 0.5s ease;
+    width: 0%;
+  }
+
+  /* ── Card ───────────────────────────────────────────────────── */
+  .card {
+    background: var(--surface);
+    border-radius: var(--radius-card);
+    padding: 0.6rem 1.2rem 0.6rem;
+    width: 100%;
+    max-width: 380px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.35rem;
+    border: var(--card-border) solid var(--border);
+    font-family: var(--timer-font, var(--font-numeric));
+    font-size: 2.8rem;
+    font-weight: var(--timer-weight, 600);
+    color: var(--ink);
+    letter-spacing: -0.02em;
+    line-height: 1;
+    text-align: center;
+  }
+
+  /* ── Timer row: 3-column layout ────────────────────────────── */
+  .timer-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    gap: 0.5rem;
+  }
+  .timer-row-side {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .timer-row-left { align-items: center; }
+  .timer-row-right { align-items: center; }
+
+  .phase-label {
+    font-size: 0.75rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-weight: 600;
+  }
+
+  /* ── Exercise info ──────────────────────────────────────────── */
+  .ex-info { text-align: center; }
+
+  .ex-num {
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink);
+    font-weight: 700;
+    line-height: 1.3;
+    text-align: center;
+    white-space: nowrap;
+  }
+
+.ex-name {
+    font-family: var(--list-font, var(--font-body));
+    font-size: 1.1rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  .ex-side {
+    font-size: 0.85rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-weight: 700;
+    margin-top: 0.25rem;
+  }
+
+  .status-msg {
+    font-size: 0.8rem;
+    color: var(--ink);
+    font-weight: 600;
+    text-align: center;
+  }
+
+  /* ── Controls ───────────────────────────────────────────────── */
+  .controls {
+    display: flex;
+    gap: 1.2rem;
+    justify-content: center;
+    width: 100%;
+  }
+  .controls .btn-reset,
+  .controls .btn-main {
+    min-width: 6.05rem;
+  }
+
+  button {
+    cursor: pointer;
+    font-family: var(--font-display);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    border: none;
+    transition: background 0.2s, color 0.2s, border-color 0.2s, transform 0.12s;
+  }
+
+  .btn-reset {
+    background: var(--surface);
+    border: 1.5px solid var(--ink);
+    color: var(--ink);
+    font-family: var(--font-display);
+    font-size: 12px;
+    font-weight: 700;
+    padding: 6px 14px;
+    min-width: 5.5rem;
+    border-radius: var(--radius-btn);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    line-height: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .btn-reset:active { transform: scale(0.96); }
+
+  .btn-main {
+    background: var(--accent);
+    color: #fff;
+    font-family: var(--font-display);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    padding: 6px 14px;
+    min-width: 5.5rem;
+    border-radius: var(--radius-btn);
+    text-transform: uppercase;
+    border: 1.5px solid var(--ink);
+    line-height: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .btn-main:active { transform: scale(0.96); }
+  .btn-main:hover { filter: brightness(1.05); }
+
+  /* ── Queue ──────────────────────────────────────────────────── */
+  .queue-section {
+    width: 100%;
+    max-width: 380px;
+    flex: 1;
+    padding: 0 1rem 1rem;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    align-self: center;
+  }
+
+  .queue-card {
+    background: var(--surface);
+    border-radius: var(--radius-card);
+    border: var(--card-border) solid var(--border);
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  .queue-header {
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--ink);
+    font-weight: 700;
+    padding: 0.75rem 1.1rem 0.5rem;
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
+  }
+
+  .queue-scroll {
+    overflow-y: auto;
+    flex: 1;
+    padding: 0.5rem 0.75rem 1rem;
+    -webkit-overflow-scrolling: touch;
+  }
+  .queue-scroll::-webkit-scrollbar { width: 3px; }
+  .queue-scroll::-webkit-scrollbar-thumb { background: var(--track); border-radius: 2px; }
+
+  .queue {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  .q-item {
+    background: #fff7d6;
+    border-radius: var(--radius-item);
+    padding: 0.75rem 1.1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: var(--ex-border-width, 1.5px) solid var(--ex-border-color, #efb07a);
+    opacity: 1;
+    transition: opacity 0.25s, border-color 0.25s, background 0.25s;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .q-item.rest-item {
+    background: var(--surface);
+    border: 1.5px solid #efb07a;
+    padding: 0.55rem 1.1rem;
+  }
+  .q-item:hover { opacity: 0.85; }
+  .q-item.upcoming { opacity: 1; }
+  .q-item.current {
+    opacity: 1;
+    background: #fff7d6;
+    border: 2.5px solid var(--rest);
+    padding: 0.75rem 1.1rem;
+  }
+  .q-item.current.rest-item {
+    background: var(--rest-soft);
+    border: 2.5px solid var(--rest);
+    padding: 0.55rem 1.1rem;
+  }
+  .q-item.completed { opacity: 0.5; }
+  .q-item.rest-item .q-name { font-size: 0.875rem; font-weight: 500; color: #888070; }
+  .q-item.rest-item .q-time { font-size: 0.875rem; font-weight: 500; color: #888070; }
+  .q-item.jump-target {
+    opacity: 1;
+    background: var(--accent-soft);
+    border-color: var(--accent);
+  }
+
+  .q-name {
+    font-size: 0.95rem;
+    color: var(--ink);
+    font-family: var(--list-font, var(--font-body));
+    font-weight: var(--list-weight, 500);
+    flex: 1;
+  }
+
+  .q-badge {
+    font-size: 0.85rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--rest);
+    font-family: var(--font-display);
+    font-weight: 700;
+    white-space: nowrap;
+    min-width: 2.2rem;
+    text-align: center;
+    margin-left: 0.4rem;
+  }
+
+  .q-time {
+    font-size: 0.9rem;
+    color: var(--ink);
+    font-family: var(--font-body);
+    font-weight: 600;
+    white-space: nowrap;
+    margin-left: 0.3rem;
+  }
+
+  /* ── Edit overlay ───────────────────────────────────────────── */
+  .edit-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(26,21,16,0.5);
+    z-index: 100;
+    align-items: flex-end;
+    justify-content: center;
+  }
+  .edit-overlay.open { display: flex; }
+
+.edit-panel {
+    background: var(--bg);
+    border-radius: 1.5rem 1.5rem 0 0;
+    width: 100%;
+    max-width: 480px;
+    max-height: 92dvh;
+    display: flex;
+
+    flex-direction: column;
+    padding: 2.25rem 1.2rem 1.5rem;
+    gap: 1rem;
+    box-shadow: 0 -8px 32px rgba(0,0,0,0.15);
+    overflow: hidden;
+  }
+
+  .edit-panel-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+
+  .edit-panel-title {
+    font-family: var(--title-font, var(--font-display));
+    font-size: 1.25rem !important;
+    font-weight: 600 !important;
+    color: var(--accent);
+    letter-spacing: 1px;
+    line-height: 1;
+    text-transform: uppercase;
+    text-align: center;
+  }
+
+  .btn-close {
+    background: var(--surface);
+    border: 1.5px solid var(--ink);
+    font-family: var(--font-display);
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--ink);
+    cursor: pointer;
+    width: 28px;
+    height: 28px;
+    padding: 0;
+    border-radius: var(--radius-btn);
+    position: absolute;
+    right: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+    transition: transform 0.12s;
+  }
+  .btn-close:active { transform: scale(0.96); }
+
+.settings-body {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    flex: 1;
+    min-height: 0;
+  }
+  .edit-list {
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    flex: 1;
+    min-height: 0;
+  }
+  .edit-list::-webkit-scrollbar { width: 3px; }
+  .edit-list::-webkit-scrollbar-thumb { background: var(--track); border-radius: 2px; }
+
+  .edit-row {
+    background: var(--surface);
+    border-radius: var(--radius-item);
+    padding: 0.7rem 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    border: 2px solid var(--border);
+  }
+
+  .edit-drag {
+    color: var(--ink);
+    font-size: 1.3rem;
+    cursor: grab;
+    padding: 0.5rem 0.6rem;
+    touch-action: none;
+    user-select: none;
+    -webkit-user-select: none;
+    line-height: 1;
+  }
+
+  .edit-body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    min-width: 0;
+  }
+
+  .edit-ctrls {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+
+  .edit-spacer { flex: 1; }
+
+  .edit-row.dragging {
+    position: fixed;
+    z-index: 200;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+    transform: scale(1.03);
+    pointer-events: none;
+    opacity: 0.7;
+    width: var(--drag-width);
+  }
+
+  .edit-placeholder {
+    border: 2px dashed var(--accent);
+    border-radius: 0.75rem;
+    background: var(--accent-soft);
+    min-height: 3rem;
+  }
+
+  .edit-origin-marker {
+    border: 2px dashed var(--track);
+    border-radius: 0.75rem;
+    background: rgba(221,213,200,0.2);
+    min-height: 3rem;
+  }
+
+  .edit-name {
+    flex: 1;
+    font-size: 0.9rem;
+    font-weight: var(--list-weight, 500);
+    color: var(--ink);
+    font-family: var(--font-body);
+    line-height: 1.35;
+  }
+
+  .edit-dur {
+    width: 54px;
+    border: 1.5px solid var(--border);
+    border-radius: 6px;
+    padding: 0.3rem 0.4rem;
+    font-family: var(--font-body);
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--ink);
+    background: white;
+    text-align: center;
+    -moz-appearance: textfield;
+  }
+  .edit-dur::-webkit-inner-spin-button,
+  .edit-dur::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  .edit-dur-label {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--ink);
+    white-space: nowrap;
+    font-family: var(--font-body);
+  }
+
+  .edit-split {
+    font-size: 0.75rem;
+    color: #b0a99c;
+    white-space: nowrap;
+    padding: 0 0.6rem;
+    height: 28px;
+    border: 1.5px solid #b0a99c;
+    border-radius: 20px;
+    cursor: pointer;
+    background: white;
+    transition: background 0.2s, color 0.2s, border-color 0.2s;
+    font-family: var(--font-display);
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+  }
+  .edit-split.active { background: var(--rest); color: white; border-color: var(--ink); }
+
+  .btn-del {
+    background: transparent;
+    border: 1.5px solid #b0a99c;
+    color: #b0a99c;
+    font-size: 0.6rem;
+    cursor: pointer;
+    width: 24px;
+    height: 24px;
+    padding: 0;
+    border-radius: var(--radius-btn);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+    flex-shrink: 0;
+    transition: color 0.2s;
+  }
+  .btn-del:hover { color: #c00; }
+
+  .btn-hide {
+    font-size: 0.75rem;
+    color: #b0a99c;
+    white-space: nowrap;
+    padding: 0 0.6rem;
+    height: 28px;
+    border: 1.5px solid #b0a99c;
+    border-radius: 20px;
+    cursor: pointer;
+    background: white;
+    transition: background 0.2s, color 0.2s, border-color 0.2s;
+    font-family: var(--font-display);
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+  }
+  .btn-hide.active {
+    background: var(--rest);
+    color: white;
+    border-color: var(--ink);
+  }
+  .edit-row.ex-hidden .edit-name {
+    text-decoration: line-through;
+    opacity: 0.45;
+  }
+  .edit-row.ex-hidden .edit-dur {
+    opacity: 0.45;
+  }
+
+  .edit-rest-row {
+    background: var(--surface);
+    border-radius: 0.75rem;
+    padding: 0.7rem 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    border: 2px solid var(--border);
+  }
+  .edit-rest-row .rest-label {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--ink);
+    font-family: 'Inter', sans-serif;
+    line-height: 1.35;
+  }
+  .edit-rest-row.rest-hidden .rest-label {
+    text-decoration: line-through;
+    opacity: 0.45;
+  }
+  .edit-rest-row.rest-hidden .edit-dur {
+    opacity: 0.45;
+  }
+  .btn-insert-rest {
+    width: 100%;
+    padding: 0.6rem 1rem;
+    border-radius: 0.75rem;
+    border: 1.5px dashed var(--border);
+    background: transparent;
+    color: var(--rest);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .btn-insert-rest:active { transform: scale(0.98); }
+  .edit-rest-row select.rest-select {
+    flex: 1;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--ink);
+    border: 1.5px solid var(--border);
+    border-radius: 6px;
+    padding: 0.2rem 0.4rem;
+    background: white;
+    min-width: 0;
+  }
+
+  .edit-actions {
+    display: flex;
+    gap: 0.7rem;
+    justify-content: center;
+  }
+
+  .btn-apply {
+    background: var(--accent);
+    color: #fff;
+    font-family: var(--font-display);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    padding: 6px 14px;
+    min-width: 5.5rem;
+    border-radius: var(--radius-btn);
+    text-transform: uppercase;
+    cursor: pointer;
+    border: 1.5px solid var(--ink);
+    transition: transform 0.12s;
+    line-height: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .btn-apply:active { transform: scale(0.96); }
+/* Laptop Frame Logic */
+  @media (min-width: 1024px) {
+    body {
+      background: #e4e0d8;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .app-container {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      width: 390px;
+      height: 850px;
+      max-height: 95dvh;
+      background: var(--bg);
+      border: 3px solid #2a2a2a;
+      border-radius: 28px;
+      overflow: hidden;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+    }
+    /* Keeps the fixed header and menus inside the black border */
+    .fixed-top, .edit-overlay {
+      position: absolute !important;
+    }
+    .edit-overlay .edit-panel {
+      max-height: 100%;
+      height: 100%;
+      border-radius: 0;
+    }
+    /* Fixes scrolling for the exercise list */
+    .queue-section { height: 100%; }
+  }
+  /* Mobile defaults - ensures iPhone stays full screen */
+
+  /* Mobile defaults - forces app to stay inside the screen and scroll */
+   @media (max-width: 1023px) {
+    .app-container { 
+      width: 100%; 
+      height: 100dvh; 
+      display: flex; 
+      flex-direction: column; 
+      overflow: hidden; 
+    }
+  }
+
+  /* ── Delete confirm modal ──────────────────────────────────── */
+  .confirm-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(26,21,16,0.5);
+    z-index: 200;
+    align-items: center;
+    justify-content: center;
+  }
+  .confirm-overlay.open { display: flex; }
+  .confirm-box {
+    background: var(--bg);
+    border-radius: 1.5rem;
+    padding: 1.5rem 2rem;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+    text-align: center;
+  }
+
+  .btn-cancel {
+    background: var(--surface);
+    border: 1.5px solid var(--ink);
+    color: var(--ink);
+    font-family: var(--font-display);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    padding: 6px 14px;
+    min-width: 5.5rem;
+    border-radius: var(--radius-btn);
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: transform 0.12s;
+    line-height: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .btn-cancel:active { transform: scale(0.96); }
+
+  /* ── Tweaks panel ───────────────────────────────────────────── */
+  #tweaksPanel {
+    display: none;
+    position: fixed;
+    left: 16px;
+    bottom: 16px;
+    z-index: 1000;
+    background: var(--surface);
+    border: 2px solid var(--ink);
+    border-radius: 1rem;
+    padding: 14px 14px 12px;
+    box-shadow: 0 12px 32px rgba(0,0,0,0.18);
+    font-family: var(--font-body);
+    width: 260px;
+  }
+  #tweaksPanel.open { display: block; }
+  .tweaks-title {
+    font-family: var(--font-display);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .tweaks-section {
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink);
+    opacity: 0.6;
+    margin: 6px 0 6px;
+    font-weight: 600;
+  }
+  .tweaks-options {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 6px;
+  }
+  .tweak-opt {
+    border: 1.5px solid var(--border);
+    background: var(--bg);
+    border-radius: 10px;
+    padding: 10px 4px 8px;
+    cursor: pointer;
+    text-align: center;
+    transition: border-color 0.15s, background 0.15s;
+    font-family: var(--font-body);
+    color: var(--ink);
+  }
+  .tweak-opt:hover { border-color: var(--ink); }
+  .tweak-opt.active {
+    border-color: var(--accent);
+    background: var(--accent-soft);
+  }
+  .tweak-opt .sample {
+    font-size: 14px;
+    color: var(--ink);
+    line-height: 1.1;
+    margin-bottom: 4px;
+  }
+  .tweak-opt .swatch {
+    width: 100%;
+    height: 14px;
+    border-radius: 3px;
+    margin-bottom: 5px;
+    border: 1px solid rgba(0,0,0,0.1);
+  }
+  .tweak-opt .bar-preview {
+    width: 100%;
+    padding: 0 2px;
+    margin-bottom: 6px;
+  }
+  .tweak-opt .bar-track {
+    width: 100%;
+    height: 6px;
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  .tweak-opt .bar-fill {
+    width: 42%;
+    height: 100%;
+    background: var(--rest);
+    border-radius: 3px;
+  }
+  .tweak-opt .font-sample {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--ink);
+    line-height: 1.1;
+    margin-bottom: 4px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .tweak-opt .tag {
+    font-size: 9px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink);
+    opacity: 0.7;
+    font-weight: 600;
+    font-family: var(--font-display);
+  }
+  .tweaks-note {
+    font-size: 11px;
+    color: var(--ink);
+    opacity: 0.55;
+    margin-top: 10px;
+    line-height: 1.35;
+  }
+  #tweaksClose {
+    background: transparent;
+    border: none;
+    color: var(--ink);
+    font-family: var(--font-display);
+    font-size: 16px;
+    cursor: pointer;
+    padding: 0 4px;
+    line-height: 1;
+  }
+
+</style>
+</head>
+<body>
+<div class="app-container">
+
+<div class="fixed-top">
+  <h1>TRX STRETCH</h1>
+  <div class="timers-bar">
+    <div class="timer-box">
+      <span class="timer-label">Elapsed</span>
+      <span class="timer-val" id="elapsedDisplay">0:00</span>
+    </div>
+    <div class="timer-box">
+      <span class="timer-label">Total</span>
+      <span class="total-duration" id="totalDurationDisplay"></span>
+    </div>
+    <div class="timer-box">
+      <span class="timer-label">Remaining</span>
+      <span class="timer-val" id="remainingDisplay">—</span>
+    </div>
+  </div>
+  <div class="edit-row-outer">
+    <button class="btn-edit" onclick="openEdit()">EDIT</button>
+    <button class="btn-edit" onclick="openSettings()">SETTINGS</button>
+    <button class="btn-save" onclick="showSave()">SAVE</button>
+  </div>
+
+  <div class="card" id="mainCard">
+  <div class="timer-row">
+    <div class="timer-row-side timer-row-left">
+      <div class="ex-num" id="exNum"></div>
+    </div>
+    <div id="numDisplay" class="ring-num-display">0:00</div>
+    <div class="timer-row-side timer-row-right">
+      <div class="coach-row">
+        <span class="coach-label">Coach</span><br><span id="coachName">Hope</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="progress-bar-wrap">
+    <div class="progress-bar-fill" id="progressBar"></div>
+  </div>
+
+  <div class="phase-label" id="phaseLabel"></div>
+
+  <div class="ex-info">
+    <div class="ex-name" id="exName">TRX STRETCH</div>
+    <div class="ex-side" id="exSide"></div>
+  </div>
+
+  <div class="status-msg" id="statusMsg"></div>
+
+  <div class="controls">
+    <button class="btn-reset" onclick="resetTimer()">Reset</button>
+    <button class="btn-main" id="mainBtn" onclick="ringTap()">Start</button>
+  </div>
+</div><!-- end card -->
+</div><!-- end fixed-top -->
+
+<div class="queue-section" id="queueSection">
+  <div class="queue-card">
+    <div class="queue-header"></div>
+    <div class="queue-scroll" id="queueScroll">
+      <div class="queue" id="queueEl"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Save popup -->
+<div class="save-popup-overlay" id="savePopup">
+  <div class="save-popup">
+    <div id="savePanel1" style="">
+      <h3>Save</h3>
+      <div class="save-popup-btns">
+        <button class="btn-save-local" onclick="confirmSaveLocal()">Save to Browser</button>
+        <button class="btn-save-download" onclick="showDownloadPanel()">Save to Downloads</button>
+        <button class="btn-save-cancel" onclick="hideSave()">Cancel</button>
+      </div>
+    </div>
+    <div id="savePanel2" style="display:none;">
+      <h3>Save to Downloads</h3>
+      <div class="save-filename-row">
+        <label>Filename</label>
+        <input class="save-filename-input" id="downloadFilename" type="text" value="trx_stretch_template-v1.2.html">
+      </div>
+      <div class="save-popup-btns">
+        <button class="btn-save-download" onclick="confirmSaveDownload()">Download</button>
+        <button class="btn-save-cancel" onclick="showMainPanel()">← Back</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Delete confirmation modal -->
+<div class="confirm-overlay" id="confirmDeleteOverlay">
+  <div class="confirm-box">
+    <div class="edit-panel-title" style="margin-bottom:1rem;">DELETE EXERCISE?</div>
+    <div class="edit-actions">
+      <button class="btn-cancel" id="confirmDeleteNo">Cancel</button>
+      <button class="btn-apply" id="confirmDeleteYes">Delete</button>
+    </div>
+  </div>
+</div>
+
+<div class="edit-overlay" id="editOverlay">
+  <div class="edit-panel">
+    <div style="display: flex; flex-direction: column; gap: 4px;">
+      <div class="edit-panel-header">
+        <span class="edit-panel-title">EDIT TIMERS</span>
+      </div>
+      <div id="versionInfo" style="text-align:center;color:var(--ink);opacity:0.45;font-size:0.7rem;">v1.2</div>
+    </div>
+    <div class="edit-actions" style="margin-bottom:8px;">
+      <button class="btn-cancel" onclick="closeEdit()">Cancel</button>
+      <button class="btn-apply" onclick="applyEdit()">Apply</button>
+    </div>
+    <div class="edit-list" id="editList"></div>
+  </div>
+</div>
+
+<!-- Settings overlay -->
+<div class="edit-overlay" id="settingsOverlay">
+  <div class="edit-panel">
+    <div class="edit-panel-header">
+      <span class="edit-panel-title">SETTINGS</span>
+    </div>
+    <div class="edit-actions">
+      <button class="btn-cancel" onclick="closeSettings()">Cancel</button>
+      <button class="btn-apply" onclick="closeSettings()">Apply</button>
+    </div>
+    <div class="settings-body">
+
+<div style="max-width:340px;width:100%;margin:0 auto;display:flex;flex-direction:column;gap:1rem;flex-shrink:0;">
+      <div class="voice-label">Routine</div>
+      <div style="display:flex;gap:0.7rem;justify-content:center;">
+      <button class="voice-btn" id="btnModeTRX" style="min-width: 6.5rem;" onclick="setStretchMode('trx')">TRX</button>
+      <button class="voice-btn" id="btnModeBandFree" style="min-width: 6.5rem;" onclick="setStretchMode('band_free')">Morning</button>
+      </div>
+    </div>
+
+    <div id="coachVoiceWrap" style="max-width:340px;width:100%;margin:0 auto;display:flex;flex-direction:column;gap:1rem;margin-top:0;flex-shrink:0;">
+
+      <div class="voice-label">Coach voice</div>
+      <div class="voice-grid" id="voiceSelector"></div>
+    </div>
+    <div class="voice-section-label">Notices</div>
+    <div class="toggle-rows">
+      <div class="toggle-row">
+        <span class="toggle-label">Rest between exercises</span>
+        <div style="display:flex;align-items:center;gap:0.5rem;">
+          <button class="btn-adjust" onclick="adjustRestDur(-1)">−</button>
+          <span id="restDurVal" style="font-family:'Inter',sans-serif;font-weight:600;font-size:0.85rem;min-width:2rem;text-align:center;">3 sec</span>
+          <button class="btn-adjust" onclick="adjustRestDur(1)">+</button>
+        </div>
+      </div>
+      <div class="toggle-row">
+        <span class="toggle-label">3-2-1 countdown</span>
+        <button class="btn-toggle active" id="toggle321" onclick="toggleSetting('321')">ON</button>
+      </div>
+      <div class="toggle-row">
+        <span class="toggle-label">Halfway notice</span>
+        <button class="btn-toggle active" id="toggleHalfway" onclick="toggleSetting('halfway')">ON</button>
+      </div>
+      <div class="toggle-row">
+        <span class="toggle-label">10-second markers</span>
+        <button class="btn-toggle active" id="toggle10sec" onclick="toggleSetting('10sec')">ON</button>
+      </div>
+      <div class="toggle-row">
+        <span class="toggle-label">Session count (this week)</span>
+        <button class="btn-toggle active" id="toggleSession" onclick="toggleSetting('session')">ON</button>
+      </div>
+    </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<script>
+/*AUDIO_MAP_PLACEHOLDER*/
+
+// ─── Exercise lists ───────────────────────────────────────────────────────────
+// restWarn: array of phrase keys played (after "Rest") during the preceding rest
+// restDur:  rest duration before this exercise (overrides REST_DUR)
+const EXERCISES_TRX = [
+  { name:"Neck stretch - all directions",                    dur:30, split:false },
+  { name:"Shoulder rolls",                                           dur:20, split:false },
+  { name:"Arm swings",                                               dur:20, split:false },
+  { name:"TRX chest stretch",                                        dur:30, split:false,
+    restWarn:["Grab your band", "Face away from anchor"], restDur:10 },
+  { name:"TRX overhead chest stretch",                               dur:30, split:false },
+  { name:"TRX biceps stretch - palms down lean back",                dur:30, split:false,
+    restWarn:["Face anchor"], restDur:8 },
+  { name:"TRX rotation stretch - turn away",                         dur:30, split:"lr",
+    restWarn:["Sideways to anchor"], restDur:8 },
+  { name:"TRX side bends - sideways to anchor",                      dur:30, split:"lr",
+    restWarn:["Sideways to anchor", "grip the band overhead"], restDur:8 },
+  { name:"Pull-up bar hang - feet on floor",                         dur:40, split:false,
+    restWarn:["Let go of the TRX bands", "Walk to your pull-up bar"], restDur:10 },
+  { name:"Standing Forward Bend - hang limp from hips, knees soft",  dur:40, split:false,
+    restWarn:["Step away from the bar"], restDur:8 },
+  { name:"Hip circles",                                              dur:30, split:false },
+  { name:"Quads - Pull one foot up behind you",                      dur:30, split:"lr"  },
+  { name:"Calves - lean into the wall, both legs straight",          dur:30, split:false },
+  { name:"Circle ankles",                                            dur:20, split:"lr"  },
+];
+
+const EXERCISES_BAND_FREE = [
+  { name:"Neck stretch",                                             dur:30, split:false, neckCues:true },
+  { name:"Shoulder rolls",                                           dur:20, split:false },
+  { name:"Arm swings",                                               dur:20, split:false },
+  { name:"Chest opener - clasp hands behind your back",              dur:20, split:false },
+  { name:"Hands together behind head",                               dur:20, split:false },
+  { name:"Overhead chest stretch - arms up, lean back",              dur:30, split:false },
+  { name:"Biceps - Arms spread low behind you, thumbs down, palms out", dur:30, split:false },
+  { name:"Torso rotation - reach back",                              dur:30, split:"lr"  },
+  { name:"Obliques - Side bend with one arm overhead",               dur:30, split:"lr"  },
+  { name:"Pull-up bar hang - feet on floor",                         dur:20, split:false, halfway:true,
+    restWarn:["Walk to your pull-up bar"], restDur:10 },
+  { name:"Standing Forward Bend - hang limp from hips, knees soft",  dur:40, split:false,
+    restWarn:["Step away from the bar"], restDur:8 },
+  { name:"Hip circles",                                              dur:30, split:false },
+  { name:"Quads - Pull one foot up behind you",                      dur:30, split:"lr"  },
+  { name:"Calves - lean into the wall, both legs straight",          dur:30, split:false },
+  { name:"Circle ankles",                                            dur:20, split:"lr"  },
+];
+
+let EXERCISES = EXERCISES_TRX;
+
+// ─── Constants ────────────────────────────────────────────────────────────────
+let   REST_DUR       = 3;
+const GET_READY_DUR  = 5;
+
+// ─── Voice & notice settings ──────────────────────────────────────────────────
+// ── Voice roster ─────────────────────────────────────────────────────────────
+// To remove a voice: delete its line. To add one: add a line + its audio_map.
+// Button order left→right matches the order of entries here.
+const VOICES = {
+  fariba:   "FARIBA",
+  hope:     "HOPE",
+  arabella: "ARABELLA",
+  brittney: "BRITTNEY",
+};
+const VOICE_DEFAULT = "hope";
+const SETTINGS_KEY = "trxStretch_settings";
+// APP METADATA — version number and save date. Updated automatically on Save to Downloads.
+// ★ To manually update the version, change it here — everything else derives from this line.
+const DEFAULT_META = {"version":"1.3","savedDate":"Apr 25, 2026"};
+const EXERCISES_KEY_TRX = "trxStretch_exercises_trx_" + DEFAULT_META.version;
+const EXERCISES_KEY_BF  = "trxStretch_exercises_bf_" + DEFAULT_META.version;
+let   VOICE        = "hope";
+let   SHOW_321     = true;
+let   SHOW_HALFWAY = true;
+let   SHOW_10SEC   = false;
+let   SHOW_SESSION = true;
+let   STRETCH_MODE = "band_free"; // "trx" | "band_free"
+
+const WEEK_SESSION_KEY = "trxStretch_weekSessions";
+
+function getWeekMonday() {
+  const now = new Date();
+  const day = now.getDay();          // 0=Sun … 6=Sat
+  const diff = day === 0 ? -6 : 1 - day;   // shift so Monday=0
+  const mon = new Date(now.getFullYear(), now.getMonth(), now.getDate() + diff);
+  return mon.getFullYear() + "-" +
+         String(mon.getMonth() + 1).padStart(2, "0") + "-" +
+         String(mon.getDate()).padStart(2, "0");
+}
+
+function getSessionCount() {
+  try {
+    const data = JSON.parse(localStorage.getItem(WEEK_SESSION_KEY));
+    if (data && data.weekKey === getWeekMonday()) return data.count;
+  } catch(e) {}
+  return 0;
+}
+
+function incrementSession() {
+  const weekKey = getWeekMonday();
+  const count = getSessionCount() + 1;
+  try {
+    localStorage.setItem(WEEK_SESSION_KEY, JSON.stringify({ weekKey, count }));
+  } catch(e) {}
+}
+
+function cue(phrase) { return phrase + "_" + VOICE; }
+
+function loadSettings() {
+  try {
+    const saved = JSON.parse(localStorage.getItem(SETTINGS_KEY));
+    if (saved) {
+      if (saved.voice && VOICES[saved.voice]) VOICE = saved.voice;
+      else if (saved.voice)               VOICE = VOICE_DEFAULT;
+      if (typeof saved.show321     === "boolean") SHOW_321     = saved.show321;
+      if (typeof saved.showHalfway === "boolean") SHOW_HALFWAY = saved.showHalfway;
+      if (typeof saved.show10sec   === "boolean") SHOW_10SEC   = saved.show10sec;
+      if (typeof saved.showSession === "boolean") SHOW_SESSION = saved.showSession;
+      if (typeof saved.restDur === "number" && saved.restDur >= 1 && saved.restDur <= 30) REST_DUR = saved.restDur;
+      if (saved.stretchMode === "trx" || saved.stretchMode === "band_free") STRETCH_MODE = saved.stretchMode;
+    }
+  } catch(e) {}
+  EXERCISES = STRETCH_MODE === "trx" ? EXERCISES_TRX : EXERCISES_BAND_FREE;
+}
+
+function saveSettings() {
+  try {
+    localStorage.setItem(SETTINGS_KEY, JSON.stringify({
+      voice: VOICE, show321: SHOW_321, showHalfway: SHOW_HALFWAY, show10sec: SHOW_10SEC, showSession: SHOW_SESSION, restDur: REST_DUR, stretchMode: STRETCH_MODE
+    }));
+  } catch(e) {}
+}
+
+function saveExercises() {
+  try {
+    localStorage.setItem(EXERCISES_KEY_TRX, JSON.stringify(EXERCISES_TRX));
+    localStorage.setItem(EXERCISES_KEY_BF, JSON.stringify(EXERCISES_BAND_FREE));
+  } catch(e) {}
+}
+
+function loadExercises() {
+  try {
+    const savedTRX = JSON.parse(localStorage.getItem(EXERCISES_KEY_TRX));
+    if (Array.isArray(savedTRX) && savedTRX.length > 0) {
+      EXERCISES_TRX.length = 0;
+      savedTRX.forEach(e => EXERCISES_TRX.push(e));
+    }
+  } catch(e) {}
+  try {
+    const savedBF = JSON.parse(localStorage.getItem(EXERCISES_KEY_BF));
+    if (Array.isArray(savedBF) && savedBF.length > 0) {
+      EXERCISES_BAND_FREE.length = 0;
+      savedBF.forEach(e => EXERCISES_BAND_FREE.push(e));
+    }
+  } catch(e) {}
+  EXERCISES = STRETCH_MODE === "trx" ? EXERCISES_TRX : EXERCISES_BAND_FREE;
+}
+
+function saveMeta() { try { localStorage.setItem('trxStretch_meta', JSON.stringify(meta)); } catch(e) {} }
+function loadMeta() {
+  try {
+    const s = localStorage.getItem('trxStretch_meta');
+    if (s) {
+      const m = JSON.parse(s);
+      m.version = DEFAULT_META.version;
+      m.savedDate = DEFAULT_META.savedDate;
+      return m;
+    }
+    return JSON.parse(JSON.stringify(DEFAULT_META));
+  } catch(e) { return JSON.parse(JSON.stringify(DEFAULT_META)); }
+}
+
+function renderVersion() {
+  const el = document.getElementById('versionInfo');
+  if (el) el.textContent = 'v' + meta.version + ' \u00b7 ' + meta.savedDate;
+}
+
+function buildVoiceButtons() {
+  const sel = document.getElementById("voiceSelector");
+  if (!sel) return;
+  sel.innerHTML = "";
+  Object.entries(VOICES).forEach(([key, label]) => {
+    const btn = document.createElement("button");
+    btn.className = "voice-btn" + (key === VOICE ? " active" : "");
+    btn.dataset.voice = key;
+    btn.textContent = label;
+    btn.onclick = () => setVoice(key);
+    sel.appendChild(btn);
+  });
+}
+
+function syncCoachDisplay() {
+  document.getElementById("coachName").textContent = VOICES[VOICE] || VOICE;
+  document.querySelectorAll(".voice-btn").forEach(b => {
+    b.classList.toggle("active", b.dataset.voice === VOICE);
+  });
+}
+
+function syncToggleDisplay() {
+  document.getElementById("toggle321").classList.toggle("active",     SHOW_321);
+  document.getElementById("toggleHalfway").classList.toggle("active", SHOW_HALFWAY);
+  document.getElementById("toggle10sec").classList.toggle("active",   SHOW_10SEC);
+  document.getElementById("toggle321").textContent     = SHOW_321     ? "ON" : "OFF";
+  document.getElementById("toggleHalfway").textContent = SHOW_HALFWAY ? "ON" : "OFF";
+  document.getElementById("toggle10sec").textContent   = SHOW_10SEC   ? "ON" : "OFF";
+  document.getElementById("toggleSession").classList.toggle("active", SHOW_SESSION);
+  document.getElementById("toggleSession").textContent = SHOW_SESSION ? "ON" : "OFF";
+}
+
+function adjustRestDur(delta) {
+  REST_DUR = Math.max(1, Math.min(30, REST_DUR + delta));
+  saveSettings();
+  syncRestDurDisplay();
+}
+
+function syncRestDurDisplay() {
+  const el = document.getElementById("restDurVal");
+  if (el) el.textContent = REST_DUR + " sec";
+}
+
+function setVoice(v) {
+  VOICE = v;
+  saveSettings();
+  syncCoachDisplay();
+}
+
+function toggleSetting(key) {
+  if (key === "321")     SHOW_321     = !SHOW_321;
+  if (key === "halfway") SHOW_HALFWAY = !SHOW_HALFWAY;
+  if (key === "10sec")   SHOW_10SEC   = !SHOW_10SEC;
+  if (key === "session") SHOW_SESSION = !SHOW_SESSION;
+  saveSettings();
+  syncToggleDisplay();
+}
+
+// ─── Cue pools ────────────────────────────────────────────────────────────────
+// ─── Rest warn labels (restWarn → card display) ──────────────────────────────
+const REST_WARN_LABELS = {
+  "Grab your band":    "Grab band",
+  "Face away from anchor": "Face away",
+  "Face anchor":       "Face anchor",
+  "Sideways to anchor": "Sideways",
+  "grip the band overhead": "Grip overhead",
+  "Let go of the TRX bands": "Let go bands",
+  "Walk to your pull-up bar": "Go to bar",
+  "Step away from the bar": "Step away",
+};
+
+// ─── Rest warn queue labels (restWarn → queue row suffix) ────────────────────
+const REST_WARN_QUEUE = {
+  "Grab your band":    "grab band",
+  "Face away from anchor": "face away",
+  "Face anchor":       "face anchor",
+  "Sideways to anchor": "sideways",
+  "grip the band overhead": "grip overhead",
+  "Let go of the TRX bands": "let go bands",
+  "Walk to your pull-up bar": "go to bar",
+  "Step away from the bar": "step away",
+};
+
+// ─── Available rest break messages ───────────────────────────────────────────
+const REST_OPTIONS = [
+  "Grab your band",
+  "Face away from anchor",
+  "Face anchor",
+  "Sideways to anchor",
+  "grip the band overhead",
+  "Let go of the TRX bands",
+  "Walk to your pull-up bar",
+  "Step away from the bar",
+];
+
+const SECOND_SIDE_LEFT     = ["Now let's do the left", "Now the other side", "Switch sides", "Other side now"];
+const SECOND_SIDE_RIGHT    = ["Now let's do the right", "Now the other side", "Switch sides", "Other side now"];
+const FIRST_SIDE_CUES      = ["first side", "Left side"];
+const NECK_UD_FIRST        = ["Look down"];
+const NECK_UD_SECOND       = ["Look up"];
+const COMPLETION_CUES      = ["Finished", "All done", "Exercise completed"];
+const HALFWAY_CUES         = ["Halfway", "That's halfway", "Halfway there.", "Halfway there, keep breathing", "Hold it, you're doing great", "Breathe into it", "Almost there, stay with it", "Good, keep holding", "You're halfway, don't let go"];
+const NUM_WORDS                    = {"10":"Ten","20":"Twenty","30":"Thirty","40":"Forty","50":"Fifty","60":"Sixty"};
+const REST_CUES            = ["Rest"];
+const BEGIN_CUES           = ["Starting TRX stretch timer"];
+const FINISH_CUES          = ["Great work", "That's it, well done"];
+
+const SESSION_CUES         = ["Session 1","Session 2","Session 3","Session 4","Session 5","Session 6","Session 7","Session 8","Session 9","Session 10","Session 11","Session 12","Session 13","Session 14"];
+
+// ─── Form cues for specific exercises ────────────────────────────────────────
+const FORM_MAP = {};
+
+// ─── Helpers ─────────────────────────────────────────────────────────────────
+const cap  = s => s.charAt(0).toUpperCase() + s.slice(1);
+const pick = arr => arr[Math.floor(Math.random() * arr.length)];
+const fmt  = s => {
+  s = Math.floor(s);
+  return s >= 60
+    ? Math.floor(s / 60) + ":" + (s % 60).toString().padStart(2, "0")
+    : "0:" + s.toString().padStart(2, "0");
+};
+
+// ─── Build steps ─────────────────────────────────────────────────────────────
+let STEPS = [];
+function buildSteps() {
+  STEPS = [];
+  const visible = EXERCISES.filter(ex => !ex.hidden);
+  visible.forEach((ex, exIdx) => {
+    const sides   = ex.split ? (ex.split === "ud" ? ["up","down"] : ["left","right"]) : [null];
+    const sideDur = Math.floor(ex.dur / sides.length);
+    sides.forEach((side, si) => {
+      STEPS.push({ type:"exercise", ex, name:ex.name, side, dur:sideDur, exIdx,
+                   isLastSide: si === sides.length - 1 });
+    });
+    if (exIdx < visible.length - 1) {
+      const nxt = visible[exIdx + 1];
+      STEPS.push({ type:"rest", dur: nxt.restDur || REST_DUR,
+                   restWarn: nxt.restWarn || false, afterExIdx: exIdx });
+    }
+  });
+}
+
+// ─── Totals ───────────────────────────────────────────────────────────────────
+const totalEx   = () => EXERCISES.filter(ex => !ex.hidden).length;
+const exUpTo    = si => STEPS[si].exIdx + 1;
+function calcTotalTime() { return STEPS.reduce((sum, s) => sum + s.dur, 0); }
+function updateTotalDisplay() {
+  document.getElementById("totalDurationDisplay").textContent = fmt(calcTotalTime());
+}
+
+// ─── State ────────────────────────────────────────────────────────────────────
+// phase: "idle" | "get-ready" | "announcing" | "exercise" | "rest" | "paused" | "done"
+let phase          = "idle";
+let stepIdx        = 0;
+let tLeft          = 0;
+let halfwayFired   = false;
+let jumpTarget     = -1;
+let ticker         = null;
+let getReadyTicker = null;
+let elapsedSec     = 0;
+let elapsedTicker  = null;
+
+// ─── DOM refs ─────────────────────────────────────────────────────────────────
+const numEl      = document.getElementById("numDisplay");
+const phaseEl    = document.getElementById("phaseLabel");
+const exNumEl    = document.getElementById("exNum");
+const exNameEl   = document.getElementById("exName");
+const exSideEl   = document.getElementById("exSide");
+const statusEl   = document.getElementById("statusMsg");
+const mainBtn    = document.getElementById("mainBtn");
+const progressEl = document.getElementById("progressBar");
+const queueEl    = document.getElementById("queueEl");
+
+// ─── Elapsed / remaining ─────────────────────────────────────────────────────
+function startElapsed() {
+  clearInterval(elapsedTicker);
+  elapsedTicker = setInterval(() => {
+    elapsedSec++;
+    document.getElementById("elapsedDisplay").textContent = fmt(elapsedSec);
+    const rem = Math.max(0, calcTotalTime() - elapsedSec);
+    document.getElementById("remainingDisplay").textContent = fmt(rem);
+  }, 1000);
+}
+
+function stopElapsed() {
+  clearInterval(elapsedTicker);
+  elapsedTicker = null;
+}
+
+function resetElapsed() {
+  stopElapsed();
+  elapsedSec = 0;
+  document.getElementById("elapsedDisplay").textContent = "0:00";
+  document.getElementById("remainingDisplay").textContent = fmt(calcTotalTime());
+}
+
+// ─── Audio ────────────────────────────────────────────────────────────────────
+let audioCtx    = null;
+let masterGain  = null;
+let audioBuffers = {};
+let curSource   = null;
+let pendingEnd  = null;
+
+function getAudioCtx() {
+  if (!audioCtx) {
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    masterGain = audioCtx.createGain();
+    masterGain.gain.value = 1;
+    masterGain.connect(audioCtx.destination);
+  }
+  return audioCtx;
+}
+
+function unlockAudio() {
+  try { getAudioCtx().resume(); } catch(e) {}
+}
+
+async function preloadAudio() {
+  const ctx = getAudioCtx();
+  if (ctx.state === "suspended") await ctx.resume();
+  for (const key of Object.keys(AUDIO_MAP)) {
+    if (audioBuffers[key]) continue;
+    try {
+      const b64    = AUDIO_MAP[key].split(",")[1];
+      const binary = atob(b64);
+      const bytes  = new Uint8Array(binary.length);
+      for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+      audioBuffers[key] = await ctx.decodeAudioData(bytes.buffer);
+    } catch(e) { console.warn("Audio decode failed:", key, e); }
+  }
+}
+
+function playWarmup(done) {
+  const ctx = getAudioCtx();
+  const buf = audioBuffers[cue("starting with a silent warmup")];
+  if (!buf) { if (done) done(); return; }
+  const src  = ctx.createBufferSource();
+  const gain = ctx.createGain();
+  gain.gain.value = 0;
+  src.buffer = buf;
+  src.connect(gain);
+  gain.connect(masterGain);
+  src.onended = () => { if (done) done(); };
+  src.start(0);
+}
+
+function stopAudio() {
+  pendingEnd = null;
+  if (curSource) { try { curSource.stop(); } catch(e) {} curSource = null; }
+}
+
+function playAudio(key, onEnd) {
+  stopAudio();
+  const ctx = getAudioCtx();
+  const buf = audioBuffers[key];
+  if (!buf) { if (onEnd) onEnd(); return; }
+  const src  = ctx.createBufferSource();
+  src.buffer = buf;
+  src.connect(masterGain);
+  curSource  = src;
+  pendingEnd = onEnd;
+  src.onended = () => {
+    if (curSource === src) {
+      curSource = null;
+      const cb  = pendingEnd;
+      pendingEnd = null;
+      if (cb) cb();
+    }
+  };
+  src.start(0);
+}
+
+function playSequence(keys, done) {
+  const rem = [...keys];
+  function next() {
+    if (!rem.length) { if (done) done(); return; }
+    playAudio(rem.shift(), next);
+  }
+  next();
+}
+
+// ─── Button state helpers ─────────────────────────────────────────────────────
+function setBtnRunning() {
+  mainBtn.textContent = "Pause";
+  mainBtn.style.background = "var(--green)";
+  mainBtn.style.color = "#fff";
+}
+
+function setBtnPaused() {
+  mainBtn.textContent = "Resume";
+  mainBtn.style.background = "var(--accent)";
+  mainBtn.style.color = "#fff";
+}
+
+function setBtnStart() {
+  mainBtn.textContent = "Start";
+  mainBtn.style.background = "var(--accent)";
+  mainBtn.style.color = "#fff";
+  mainBtn.style.display = "";
+}
+
+// ─── Progress ─────────────────────────────────────────────────────────────────
+function updateProgress() {
+  const doneSet = new Set();
+  STEPS.slice(0, stepIdx).forEach(s => { if (s.type === "exercise") doneSet.add(s.exIdx); });
+  progressEl.style.width = (doneSet.size / totalEx() * 100) + "%";
+}
+
+// ─── Display ──────────────────────────────────────────────────────────────────
+function showStep(si) {
+  const s = STEPS[si];
+  if (!s) return;
+  if (s.type === "exercise") {
+    exNumEl.innerHTML    = `<span class="coach-label">Exercise</span><br>${exUpTo(si)} of ${totalEx()}`;
+    exNameEl.textContent = s.name;
+    exSideEl.textContent = s.side ? cap(s.side) + " side" : "";
+    phaseEl.textContent  = "";
+    phaseEl.style.color  = "var(--accent)";
+  } else {
+    exNameEl.textContent = s.restWarn
+      ? (Array.isArray(s.restWarn) ? s.restWarn.map(w => REST_WARN_LABELS[w] || w).join(", ") : (REST_WARN_LABELS[s.restWarn] || s.restWarn))
+      : "";
+    exSideEl.textContent = "";
+    phaseEl.textContent  = "Rest";
+    phaseEl.style.color  = "var(--rest)";
+  }
+}
+
+// ─── Queue ────────────────────────────────────────────────────────────────────
+function buildQueue() {
+  queueEl.innerHTML = "";
+  let i = 0;
+  while (i < STEPS.length) {
+    const s           = STEPS[i];
+    const rowFirstIdx = i;
+    let label, time, badge = "", isRest = false;
+
+    if (s.type === "rest") {
+      const suffix = s.restWarn
+        ? " — " + (Array.isArray(s.restWarn) ? s.restWarn.map(w => REST_WARN_QUEUE[w] || w).join(", ") : (REST_WARN_QUEUE[s.restWarn] || s.restWarn))
+        : "";
+      label  = "Rest" + suffix;
+      time   = s.dur + "s";
+      isRest = true;
+      i++;
+    } else {
+      const ex        = s.ex;
+      const badgeText = ex.split === "ud" ? "U/D" : ex.split ? "L/R" : "";
+      badge           = badgeText;
+      label           = ex.name;
+      time            = fmt(ex.dur);
+      const thisExIdx = s.exIdx;
+      while (i < STEPS.length && STEPS[i].type === "exercise" && STEPS[i].exIdx === thisExIdx) i++;
+    }
+
+    const rowLastIdx = i - 1;
+    let cls = "q-item";
+    if (rowLastIdx < stepIdx)                             cls += " completed";
+    else if (stepIdx >= rowFirstIdx && stepIdx <= rowLastIdx) cls += " current";
+    else                                                   cls += " upcoming";
+    if (isRest) cls += " rest-item";
+
+    const div       = document.createElement("div");
+    div.className   = cls;
+    div.innerHTML   = `<span class="q-name">${label}</span>${badge ? `<span class="q-badge">${badge}</span>` : ''}<span class="q-time">${time}</span>`;
+
+    const jumpTo    = rowFirstIdx;
+    let touchStartX = 0, touchStartY = 0;
+    div.addEventListener("touchstart", e => {
+      touchStartX = e.touches[0].clientX;
+      touchStartY = e.touches[0].clientY;
+    }, { passive: true });
+    div.addEventListener("touchend", e => {
+      const dx = Math.abs(e.changedTouches[0].clientX - touchStartX);
+      const dy = Math.abs(e.changedTouches[0].clientY - touchStartY);
+      if (dx < 8 && dy < 8) queueClick(jumpTo);
+    }, { passive: true });
+    div.addEventListener("click", () => queueClick(jumpTo));
+    queueEl.appendChild(div);
+  }
+
+  const cur = queueEl.querySelector(".current");
+  setTimeout(() => {
+    const cur = queueEl.querySelector(".current");
+    const scroller = document.getElementById("queueScroll");
+    if (scroller && cur) {
+      scroller.scrollTo({ top: cur.offsetTop - scroller.offsetTop, behavior: "smooth" });
+    }
+  }, 0);
+}
+
+// ─── Queue jump ───────────────────────────────────────────────────────────────
+function queueClick(i) {
+  if (i === stepIdx && phase === "exercise") return;
+  // Stop everything cleanly
+  clearInterval(ticker);         ticker = null;
+  clearInterval(getReadyTicker); getReadyTicker = null;
+  stopAudio();
+  stopElapsed();
+  jumpTarget = -1;
+  statusEl.textContent = "";
+  unlockAudio();
+  phase = "idle";
+  // Preload if needed then jump
+  if (Object.keys(audioBuffers).length === 0) {
+    preloadAudio().then(() => { startElapsed(); startStep(i); });
+  } else {
+    startElapsed();
+    startStep(i);
+  }
+}
+
+// ─── Main tap handler ─────────────────────────────────────────────────────────
+function ringTap() {
+  if (phase === "idle") {
+    unlockAudio();
+    const target = jumpTarget >= 0 ? jumpTarget : 0;
+    jumpTarget   = -1;
+    statusEl.textContent = "";
+    phase = "get-ready";
+    setBtnRunning();
+    preloadAudio().then(() => {
+      // Guard: user may have reset during preload
+      if (phase !== "get-ready") return;
+      startElapsed();
+      if (target === 0) {
+        playWarmup(() => {
+        const beginPhrase = STRETCH_MODE === "trx" ? "Starting TRX stretch timer" : "Starting morning stretch timer";
+        playAudio(cue(beginPhrase), () => {
+          if (phase !== "get-ready") return;
+          const startCountdown = () => {
+            if (phase !== "get-ready") return;
+            let countdown = GET_READY_DUR;
+            numEl.textContent   = fmt(countdown);
+            exNumEl.innerHTML   = "";
+            exNameEl.textContent = "Starting in...";
+            exSideEl.textContent = "";
+            phaseEl.textContent = "GET READY";
+            phaseEl.style.color = "var(--accent)";
+            getReadyTicker = setInterval(() => {
+              countdown--;
+              numEl.textContent = fmt(countdown);
+              if (countdown === 4) playAudio(cue("Three...... two...... one"), null);
+              if (countdown <= 0) {
+                clearInterval(getReadyTicker);
+                getReadyTicker = null;
+                if (phase === "get-ready") startStep(0);
+              }
+            }, 1000);
+          };
+          if (SHOW_SESSION) {
+            const n = Math.min(getSessionCount() + 1, 14);
+            playAudio(cue("Session " + n), startCountdown);
+          } else {
+            startCountdown();
+          }
+        });
+        }); // end playWarmup
+      } else {
+        startStep(target);
+      }
+    });
+
+  } else if (phase === "exercise" || phase === "rest" || phase === "announcing" || phase === "get-ready") {
+    // Pause — stop all timers and audio
+    clearInterval(ticker);         ticker = null;
+    clearInterval(getReadyTicker); getReadyTicker = null;
+    stopAudio();
+    stopElapsed();
+    phase = "paused";
+    setBtnPaused();
+    statusEl.textContent = "";
+
+  } else if (phase === "paused") {
+    statusEl.textContent = "";
+    if (jumpTarget >= 0) {
+      const t  = jumpTarget;
+      jumpTarget = -1;
+      phase    = "idle";
+      startElapsed();
+      startStep(t);
+      return;
+    }
+    // Resume
+    phase = STEPS[stepIdx].type === "rest" ? "rest" : "exercise";
+    setBtnRunning();
+    startElapsed();
+    runTick();
+
+  } else if (phase === "done") {
+    if (jumpTarget >= 0) {
+      const t  = jumpTarget;
+      jumpTarget = -1;
+      unlockAudio();
+      startElapsed();
+      startStep(t);
+    }
+  }
+}
+
+// ─── Step runner ──────────────────────────────────────────────────────────────
+function startStep(si) {
+  stepIdx = si;
+  const s = STEPS[si];
+  showStep(si);
+  buildQueue();
+  updateProgress();
+
+  if (s.type === "exercise") {
+    halfwayFired      = false;
+    tLeft             = s.dur;
+    numEl.textContent = fmt(tLeft);
+    phase = "announcing";
+    setBtnRunning();
+
+    const isSecondSide = s.side
+      && stepIdx > 0
+      && STEPS[stepIdx - 1].type === "exercise"
+      && STEPS[stepIdx - 1].exIdx === s.exIdx;
+
+    const keys = [];
+    if (isSecondSide) {
+      if (STEPS[stepIdx - 1] && STEPS[stepIdx - 1].name && STEPS[stepIdx - 1].name.includes("Look up and down"))
+        keys.push(cue(pick(NECK_UD_SECOND)));
+      else
+        keys.push(cue(pick(s.side === "left" ? SECOND_SIDE_LEFT : SECOND_SIDE_RIGHT)));
+    } else {
+      keys.push(cue(s.name));
+      if (s.side) {
+        if (s.name.includes("Look up and down")) keys.push(cue(pick(NECK_UD_FIRST)));
+        else keys.push(cue(pick(FIRST_SIDE_CUES)));
+      }
+    }
+
+    playSequence(keys, () => {
+      if (phase !== "announcing") return; // Paused during announcement
+      phase = "exercise";
+      setBtnRunning();
+      runTick();
+    });
+
+  } else {
+    tLeft             = s.dur;
+    numEl.textContent = fmt(tLeft);
+    phase = "rest";
+    setBtnRunning();
+
+    const rkeys = [cue(pick(REST_CUES))];
+    if (s.restWarn) {
+      const warns = Array.isArray(s.restWarn) ? s.restWarn : [s.restWarn];
+      warns.forEach(w => rkeys.push(cue(w)));
+    }
+
+    playSequence(rkeys, () => {
+      if (phase !== "rest") return;
+      runTick();
+    });
+  }
+}
+
+// ─── Tick ─────────────────────────────────────────────────────────────────────
+function runTick() {
+  clearInterval(ticker);
+  ticker = setInterval(() => {
+    tLeft--;
+    const tShow       = Math.max(0, tLeft);
+    numEl.textContent = fmt(tShow);
+    const s           = STEPS[stepIdx];
+
+    if (s.type === "exercise") {
+      const halfwayPoint = Math.floor(s.dur / 2);
+      const isFormCue    = !!FORM_MAP[s.name];
+      const midCueFires  = isFormCue || (SHOW_HALFWAY && s.dur > 20);
+
+      // ── Mid-hold cue ──────────────────────────────────────────
+      if (!halfwayFired && tLeft === halfwayPoint) {
+        halfwayFired = true;
+        if (s.ex && s.ex.neckCues) {
+          playAudio(cue("Look left and right"), null);
+        } else if (isFormCue) {
+          playAudio(cue(pick(FORM_MAP[s.name])), null);
+        } else if (s.dur > 20 && SHOW_HALFWAY) {
+          playAudio(cue(pick(HALFWAY_CUES)), null);
+        }
+      }
+
+      // ── 10-second markers ─────────────────────────────────────
+      if (SHOW_10SEC && s.dur > 15 && tLeft > 0 && tLeft % 10 === 0) {
+        const nearMid = midCueFires && Math.abs(tLeft - halfwayPoint) <= 3;
+        if (!nearMid) playAudio(cue(NUM_WORDS[String(tLeft)] || String(tLeft)), null);
+      }
+
+      // ── 3-2-1 countdown ───────────────────────────────────────
+      if (SHOW_321) {
+        if (tLeft === 4) playAudio(cue("Three...... two...... one"), null);
+      }
+    }
+
+    if (tLeft <= 0) {
+      clearInterval(ticker);
+      ticker = null;
+      onStepEnd();
+    }
+  }, 1000);
+}
+
+// ─── Step end ─────────────────────────────────────────────────────────────────
+function onStepEnd() {
+  if (phase !== "exercise" && phase !== "rest") return;
+  const nxt = stepIdx + 1;
+  if (nxt < STEPS.length) startStep(nxt); else finishAll();
+}
+
+// ─── Finish ───────────────────────────────────────────────────────────────────
+function finishAll() {
+  phase = "done";
+  incrementSession();
+  stopElapsed();
+  stopAudio();
+  clearInterval(ticker);
+  ticker = null;
+  numEl.textContent        = "✓";
+  exNumEl.innerHTML        = "";
+  exNameEl.textContent     = "Well done";
+  exSideEl.textContent     = "All stretches complete";
+  phaseEl.textContent      = "";
+  statusEl.textContent     = "";
+  progressEl.style.width   = "100%";
+  mainBtn.style.display    = "none";
+  playSequence([cue(pick(COMPLETION_CUES)), cue(pick(FINISH_CUES))], null);
+}
+
+// ─── Reset ────────────────────────────────────────────────────────────────────
+function resetTimer() {
+  clearInterval(ticker);         ticker = null;
+  clearInterval(getReadyTicker); getReadyTicker = null;
+  stopAudio();
+  stopElapsed();
+  stepIdx      = 0;
+  tLeft        = 0;
+  phase        = "idle";
+  halfwayFired = false;
+  jumpTarget   = -1;
+
+  numEl.textContent    = "0:00";
+  phaseEl.textContent  = "";
+  exNumEl.innerHTML    = "";
+  exNameEl.textContent = STRETCH_MODE === "trx" ? "TRX STRETCH" : "MORNING STRETCH";
+  exSideEl.textContent = "";
+  statusEl.textContent = "";
+  progressEl.style.width = "0%";
+  setBtnStart();
+  resetElapsed();
+  buildQueue();
+}
+
+// ─── Edit panel ───────────────────────────────────────────────────────────────
+let editDragSrc = null;
+let touchDragRow = null;
+let touchPlaceholder = null;
+let touchOriginMarker = null;
+let touchOffsetY = 0;
+let touchScrollTimer = null;
+
+function touchDragCleanup() {
+  if (touchDragRow) {
+    touchDragRow.classList.remove("dragging");
+    touchDragRow.style.position = "";
+    touchDragRow.style.top = "";
+    touchDragRow.style.left = "";
+    touchDragRow.style.zIndex = "";
+    touchDragRow.style.width = "";
+    touchDragRow.style.boxShadow = "";
+    touchDragRow.style.transform = "";
+    touchDragRow.style.pointerEvents = "";
+    touchDragRow.style.opacity = "";
+  }
+  if (touchPlaceholder && touchPlaceholder.parentNode) {
+    touchPlaceholder.parentNode.removeChild(touchPlaceholder);
+  }
+  if (touchOriginMarker && touchOriginMarker.parentNode) {
+    touchOriginMarker.parentNode.removeChild(touchOriginMarker);
+  }
+  if (touchScrollTimer) { clearInterval(touchScrollTimer); touchScrollTimer = null; }
+  touchDragRow = null;
+  touchPlaceholder = null;
+  touchOriginMarker = null;
+}
+
+function updateModeUI() {
+  document.querySelector("h1").textContent = STRETCH_MODE === "trx" ? "TRX STRETCH" : "MORNING STRETCH";
+  const btnTRX = document.getElementById("btnModeTRX");
+  const btnBF  = document.getElementById("btnModeBandFree");
+  if (btnTRX) btnTRX.classList.toggle("active", STRETCH_MODE === "trx");
+  if (btnBF)  btnBF.classList.toggle("active", STRETCH_MODE === "band_free");
+}
+
+function setStretchMode(mode) {
+  STRETCH_MODE = mode;
+  EXERCISES    = mode === "trx" ? EXERCISES_TRX : EXERCISES_BAND_FREE;
+  saveSettings();
+  buildSteps();
+  updateTotalDisplay();
+  updateModeUI();
+  resetTimer();
+}
+
+function openSettings() {
+  syncCoachDisplay();
+  syncToggleDisplay();
+  syncRestDurDisplay();
+  updateModeUI();
+  document.getElementById("settingsOverlay").classList.add("open");
+}
+
+function closeSettings() {
+  document.getElementById("settingsOverlay").classList.remove("open");
+}
+
+function setupRowDrag(row, list) {
+  const handle = row.querySelector(".edit-drag");
+  if (!handle) return;
+  handle.addEventListener("touchstart", e => {
+    e.preventDefault();
+    const touch = e.touches[0];
+    const rect = row.getBoundingClientRect();
+    touchOffsetY = touch.clientY - rect.top;
+    touchDragRow = row;
+    touchOriginMarker = document.createElement("div");
+    touchOriginMarker.className = "edit-origin-marker";
+    touchOriginMarker.style.height = rect.height + "px";
+    row.parentNode.insertBefore(touchOriginMarker, row);
+    touchPlaceholder = document.createElement("div");
+    touchPlaceholder.className = "edit-placeholder";
+    touchPlaceholder.style.height = rect.height + "px";
+    row.parentNode.insertBefore(touchPlaceholder, row);
+    row.style.setProperty("--drag-width", rect.width + "px");
+    row.classList.add("dragging");
+    row.style.position = "fixed";
+    row.style.top = rect.top + "px";
+    row.style.left = rect.left + "px";
+    row.style.width = rect.width + "px";
+    row.style.zIndex = "200";
+  }, { passive: false });
+  handle.addEventListener("touchmove", e => {
+    if (!touchDragRow) return;
+    e.preventDefault();
+    const touch = e.touches[0];
+    const y = touch.clientY;
+    touchDragRow.style.top = (y - touchOffsetY) + "px";
+    const listRect = list.getBoundingClientRect();
+    const edgeZone = 40;
+    if (touchScrollTimer) { clearInterval(touchScrollTimer); touchScrollTimer = null; }
+    if (y < listRect.top + edgeZone) touchScrollTimer = setInterval(() => { list.scrollTop -= 8; }, 16);
+    else if (y > listRect.bottom - edgeZone) touchScrollTimer = setInterval(() => { list.scrollTop += 8; }, 16);
+    const rows = Array.from(list.children).filter(r => r !== touchDragRow && r !== touchPlaceholder && r !== touchOriginMarker);
+    let inserted = false;
+    for (const r of rows) {
+      const rRect = r.getBoundingClientRect();
+      if (y < rRect.top + rRect.height / 2) { list.insertBefore(touchPlaceholder, r); inserted = true; break; }
+    }
+    if (!inserted) list.appendChild(touchPlaceholder);
+  }, { passive: false });
+  handle.addEventListener("touchend", () => {
+    if (!touchDragRow) return;
+    if (touchPlaceholder && touchPlaceholder.parentNode) touchPlaceholder.parentNode.insertBefore(touchDragRow, touchPlaceholder);
+    touchDragCleanup();
+  });
+  handle.addEventListener("touchcancel", () => { touchDragCleanup(); });
+  handle.addEventListener("mousedown", e => {
+    e.preventDefault();
+    const rect = row.getBoundingClientRect();
+    const offsetY = e.clientY - rect.top;
+    touchDragRow = row;
+    touchOriginMarker = document.createElement("div");
+    touchOriginMarker.className = "edit-origin-marker";
+    touchOriginMarker.style.height = rect.height + "px";
+    row.parentNode.insertBefore(touchOriginMarker, row);
+    touchPlaceholder = document.createElement("div");
+    touchPlaceholder.className = "edit-placeholder";
+    touchPlaceholder.style.height = rect.height + "px";
+    row.parentNode.insertBefore(touchPlaceholder, row);
+    row.style.setProperty("--drag-width", rect.width + "px");
+    row.classList.add("dragging");
+    row.style.position = "fixed";
+    row.style.top = rect.top + "px";
+    row.style.left = rect.left + "px";
+    row.style.width = rect.width + "px";
+    row.style.zIndex = "200";
+    function onMouseMove(ev) {
+      const y = ev.clientY;
+      touchDragRow.style.top = (y - offsetY) + "px";
+      const listRect = list.getBoundingClientRect();
+      if (touchScrollTimer) { clearInterval(touchScrollTimer); touchScrollTimer = null; }
+      if (y < listRect.top + 40) touchScrollTimer = setInterval(() => { list.scrollTop -= 8; }, 16);
+      else if (y > listRect.bottom - 40) touchScrollTimer = setInterval(() => { list.scrollTop += 8; }, 16);
+      const rows = Array.from(list.children).filter(r => r !== touchDragRow && r !== touchPlaceholder && r !== touchOriginMarker);
+      let ins = false;
+      for (const r of rows) {
+        const rr = r.getBoundingClientRect();
+        if (y < rr.top + rr.height / 2) { list.insertBefore(touchPlaceholder, r); ins = true; break; }
+      }
+      if (!ins) list.appendChild(touchPlaceholder);
+    }
+    function onMouseUp() {
+      document.removeEventListener("mousemove", onMouseMove);
+      document.removeEventListener("mouseup", onMouseUp);
+      if (touchDragRow && touchPlaceholder && touchPlaceholder.parentNode) touchPlaceholder.parentNode.insertBefore(touchDragRow, touchPlaceholder);
+      touchDragCleanup();
+    }
+    document.addEventListener("mousemove", onMouseMove);
+    document.addEventListener("mouseup", onMouseUp);
+  });
+}
+
+function getRestOptions() {
+  const opts = [...REST_OPTIONS];
+  EXERCISES.forEach(ex => {
+    if (ex.restWarn) {
+      const warns = Array.isArray(ex.restWarn) ? ex.restWarn : [ex.restWarn];
+      warns.forEach(w => { if (w && !opts.includes(w)) opts.push(w); });
+    }
+  });
+  return opts;
+}
+
+function createRestRow(ex, list, isNew) {
+  const rr = document.createElement("div");
+  rr.className = "edit-rest-row";
+  rr.dataset.type = "rest";
+  rr.dataset.restWarn = ex.restWarn ? JSON.stringify(ex.restWarn) : "";
+  rr.dataset.hidden = "false";
+  if (isNew) {
+    const opts = getRestOptions();
+    const optionsHtml = opts.map(o => `<option value="${o}">${o}</option>`).join("");
+    rr.innerHTML = `
+      <div class="edit-body">
+        <select class="rest-select">${optionsHtml}</select>
+        <div class="edit-ctrls">
+          <span class="edit-drag">☰</span>
+          <input class="edit-dur" type="number" min="1" max="60" value="8">
+          <span class="edit-dur-label">sec</span>
+          <span class="edit-spacer"></span>
+          <button class="btn-hide">HIDE</button>
+          <button class="btn-del">✕</button>
+        </div>
+      </div>
+    `;
+    const sel = rr.querySelector(".rest-select");
+    sel.addEventListener("change", () => { rr.dataset.restWarn = JSON.stringify([sel.value]); });
+    rr.dataset.restWarn = JSON.stringify([opts[0] || ""]);
+  } else {
+    const warns = Array.isArray(ex.restWarn) ? ex.restWarn : (ex.restWarn ? [ex.restWarn] : []);
+    const labelText = warns.length ? warns.map(w => REST_WARN_QUEUE[w] || w).join(", ") : "Custom rest";
+    const label = warns.length ? "Rest — " + labelText : "Custom rest";
+    rr.innerHTML = `
+      <div class="edit-body">
+        <span class="rest-label">${label}</span>
+        <div class="edit-ctrls">
+          <span class="edit-drag">☰</span>
+          <input class="edit-dur" type="number" min="1" max="60" value="${ex.restDur || REST_DUR}">
+          <span class="edit-dur-label">sec</span>
+          <span class="edit-spacer"></span>
+          <button class="btn-hide">HIDE</button>
+          <button class="btn-del">✕</button>
+        </div>
+      </div>
+    `;
+  }
+  setupRowDrag(rr, list);
+  rr.querySelector(".btn-hide").addEventListener("click", function() {
+    const nowHidden = rr.dataset.hidden !== "true";
+    rr.dataset.hidden = nowHidden ? "true" : "false";
+    this.classList.toggle("active", nowHidden);
+    rr.classList.toggle("rest-hidden", nowHidden);
+  });
+  rr.querySelector(".btn-del").addEventListener("click", () => { rr.remove(); });
+  return rr;
+}
+
+function openEdit() {
+  const list = document.getElementById("editList");
+  list.innerHTML = "";
+
+  // Add "Insert custom rest" button at top
+  const insertBtn = document.createElement("button");
+  insertBtn.className = "btn-insert-rest";
+  insertBtn.textContent = "+ Insert Custom Rest Break";
+  insertBtn.addEventListener("click", () => {
+    const newRest = createRestRow({ restDur: 8, restWarn: "" }, list, true);
+    if (insertBtn.nextSibling) {
+      list.insertBefore(newRest, insertBtn.nextSibling);
+    } else {
+      list.appendChild(newRest);
+    }
+    newRest.scrollIntoView({ behavior: "smooth", block: "nearest" });
+  });
+  list.appendChild(insertBtn);
+
+  EXERCISES.forEach((ex, i) => {
+    // Insert custom rest row before the exercise it belongs to
+    const hasCustomRest = i > 0 && (ex.restWarn || (ex.restDur && ex.restDur !== REST_DUR));
+    if (hasCustomRest) {
+      list.appendChild(createRestRow(ex, list, false));
+    }
+
+    const row     = document.createElement("div");
+    row.className = "edit-row";
+    const hasLR   = ex.split === "lr" || ex.split === "ud";
+    const isHidden = ex.hidden || false;
+    if (isHidden) row.classList.add("ex-hidden");
+    row.dataset.hidden = isHidden ? "true" : "false";
+    row.dataset.type = "exercise";
+    row.innerHTML = `
+      <div class="edit-body">
+        <span class="edit-name">${ex.name}</span>
+        <div class="edit-ctrls">
+          <span class="edit-drag">☰</span>
+          <input class="edit-dur" type="number" min="5" max="300" value="${ex.dur}">
+          <span class="edit-dur-label">sec</span>
+          <button class="edit-split${hasLR ? " active" : ""}" data-split="${ex.split || ""}">${ex.split === "ud" ? "U/D" : ex.split === "lr" ? "L/R" : "L/R"}</button>
+          <span class="edit-spacer"></span>
+          <button class="btn-hide${isHidden ? " active" : ""}">HIDE</button>
+          <button class="btn-del">✕</button>
+        </div>
+      </div>
+    `;
+    setupRowDrag(row, list);
+    row.querySelector(".btn-del").addEventListener("click", () => {
+      const overlay = document.getElementById("confirmDeleteOverlay");
+      overlay.classList.add("open");
+      const yesBtn = document.getElementById("confirmDeleteYes");
+      const noBtn  = document.getElementById("confirmDeleteNo");
+      function cleanup() {
+        overlay.classList.remove("open");
+        yesBtn.replaceWith(yesBtn.cloneNode(true));
+        noBtn.replaceWith(noBtn.cloneNode(true));
+      }
+      yesBtn.addEventListener("click", () => { cleanup(); row.remove(); }, { once: true });
+      noBtn.addEventListener("click", () => { cleanup(); }, { once: true });
+    });
+    row.querySelector(".btn-hide").addEventListener("click", function() {
+      const nowHidden = row.dataset.hidden !== "true";
+      row.dataset.hidden = nowHidden ? "true" : "false";
+      this.classList.toggle("active", nowHidden);
+      row.classList.toggle("ex-hidden", nowHidden);
+    });
+    row.querySelector(".edit-split").addEventListener("click", function() {
+      const cur = this.dataset.split;
+      if (!cur)          { this.dataset.split = "lr"; this.textContent = "L/R"; this.classList.add("active"); }
+      else if (cur === "lr") { this.dataset.split = "ud"; this.textContent = "U/D"; }
+      else               { this.dataset.split = "";   this.textContent = "L/R";   this.classList.remove("active"); }
+    });
+    list.appendChild(row);
+  });
+  document.getElementById("editOverlay").classList.add("open");
+}
+
+function closeEdit() {
+  document.getElementById("editOverlay").classList.remove("open");
+}
+
+function applyEdit() {
+  const allRows = Array.from(document.querySelectorAll("#editList > div[data-type]"));
+  const newEx = [];
+  let pendingRest = null;
+
+  allRows.forEach(row => {
+    if (row.dataset.type === "rest") {
+      if (row.dataset.hidden === "true") {
+        pendingRest = null;
+      } else {
+        pendingRest = {
+          restDur: Math.max(1, parseInt(row.querySelector(".edit-dur").value) || REST_DUR),
+          restWarn: (function() {
+            try { const p = JSON.parse(row.dataset.restWarn); if (Array.isArray(p)) return p; } catch(e) {}
+            const sel = row.querySelector(".rest-select");
+            return sel ? [sel.value] : false;
+          })()
+        };
+      }
+    } else if (row.dataset.type === "exercise") {
+      const name     = row.querySelector(".edit-name").textContent;
+      const dur      = Math.max(5, parseInt(row.querySelector(".edit-dur").value) || 30);
+      const splitVal = row.querySelector(".edit-split").dataset.split || false;
+      const hidden   = row.dataset.hidden === "true";
+      const orig     = EXERCISES.find(e => e.name === name) || {};
+      const entry = { name, dur, split: splitVal, hidden };
+      if (orig.neckCues) entry.neckCues = orig.neckCues;
+      if (orig.halfway)  entry.halfway  = orig.halfway;
+      if (pendingRest) {
+        entry.restDur = pendingRest.restDur;
+        entry.restWarn = pendingRest.restWarn;
+        pendingRest = null;
+      } else {
+        entry.restDur = orig.restDur || REST_DUR;
+        entry.restWarn = orig.restWarn || false;
+      }
+      newEx.push(entry);
+    }
+  });
+  // Update the correct source array
+  if (STRETCH_MODE === "trx") {
+    EXERCISES_TRX.length = 0;
+    newEx.forEach(e => EXERCISES_TRX.push(e));
+  } else {
+    EXERCISES_BAND_FREE.length = 0;
+    newEx.forEach(e => EXERCISES_BAND_FREE.push(e));
+  }
+  EXERCISES = STRETCH_MODE === "trx" ? EXERCISES_TRX : EXERCISES_BAND_FREE;
+  saveExercises();
+  buildSteps();
+  updateTotalDisplay();
+  closeEdit();
+  resetTimer();
+}
+
+// ─── Init ─────────────────────────────────────────────────────────────────────
+let meta = loadMeta();
+loadSettings();
+loadExercises();
+buildSteps();
+renderVersion();
+updateModeUI();
+
+function updateQueueTop() {
+  const fh = document.querySelector(".fixed-top").offsetHeight;
+  const qs = document.getElementById("queueSection");
+  qs.style.paddingTop = (fh + 4) + "px";
+}
+window.addEventListener("load", function() {
+  buildVoiceButtons();
+  syncCoachDisplay();
+  syncToggleDisplay();
+  syncRestDurDisplay();
+  updateTotalDisplay();
+  document.getElementById("remainingDisplay").textContent = fmt(calcTotalTime());
+  updateQueueTop();
+  buildQueue();
+});
+new ResizeObserver(updateQueueTop).observe(document.querySelector(".fixed-top"));
+
+// ─── Screen Wake Lock ─────────────────────────────────────────────────────────
+let wakeLock = null;
+async function requestWakeLock() {
+  try {
+    if (wakeLock !== null) return;
+    wakeLock = await navigator.wakeLock.request('screen');
+    wakeLock.addEventListener('release', () => { wakeLock = null; });
+  } catch(e) { wakeLock = null; }
+}
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'visible') requestWakeLock();
+});
+requestWakeLock();
+setInterval(() => { if (document.visibilityState === 'visible' && !wakeLock) requestWakeLock(); }, 30000);
+
+// ── Save popup ──────────────────────────────────────────────────────────────
+function showSave(){ showMainPanel(); document.getElementById('savePopup').classList.add('visible'); }
+function hideSave(){ document.getElementById('savePopup').classList.remove('visible'); }
+function showMainPanel(){ document.getElementById('savePanel1').style.display=''; document.getElementById('savePanel2').style.display='none'; }
+function showDownloadPanel(){
+  document.getElementById('savePanel1').style.display='none';
+  document.getElementById('savePanel2').style.display='';
+  const nextV = String(meta.version || '1.0').replace(/(\d+)$/, m => parseInt(m) + 1);
+  document.getElementById('downloadFilename').value='trx_stretch_template-v' + nextV + '.html';
+}
+function confirmSaveLocal(){
+  meta.savedDate = new Date().toLocaleDateString('en-US', {month:'short', day:'numeric', year:'numeric'});
+  saveExercises();
+  saveMeta();
+  renderVersion();
+  const btn = document.querySelector('.btn-save-local');
+  const orig = btn.textContent;
+  btn.textContent = 'Saved!';
+  btn.style.color = 'var(--rest)';
+  btn.style.fontWeight = '700';
+  setTimeout(() => { btn.textContent = orig; btn.style.color = ''; btn.style.fontWeight = ''; hideSave(); }, 1200);
+}
+function confirmSaveDownload(){
+  meta.version = String(meta.version || '1.0').replace(/(\d+)$/, m => parseInt(m) + 1);
+  const filename = document.getElementById('downloadFilename').value.trim() || ('trx_stretch_template-v' + meta.version + '.html');
+  meta.savedDate = new Date().toLocaleDateString('en-US', {month:'short', day:'numeric', year:'numeric'});
+  saveMeta();
+  renderVersion();
+  document.getElementById('savePopup').classList.remove('visible');
+  requestAnimationFrame(()=>{
+    requestAnimationFrame(()=>{
+      let h = document.documentElement.outerHTML;
+      h = h.replace(/const EXERCISES_TRX = \[[\s\S]*?\];/, 'const EXERCISES_TRX = ' + JSON.stringify(EXERCISES_TRX, null, 2) + ';');
+      h = h.replace(/const EXERCISES_BAND_FREE = \[[\s\S]*?\];/, 'const EXERCISES_BAND_FREE = ' + JSON.stringify(EXERCISES_BAND_FREE, null, 2) + ';');
+      h = h.replace(/const DEFAULT_META = \{[^}]*\};/, 'const DEFAULT_META = ' + JSON.stringify(meta) + ';');
+      const blob = new Blob([h], {type:'text/html'});
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = filename;
+      a.click();
+      URL.revokeObjectURL(a.href);
+    });
+  });
+}
+</script>
+
+<!-- Tweaks panel (exploration UI only; doesn't affect saved file logic) -->
+<div id="tweaksPanel">
+  <div class="tweaks-title">
+    <span>Tweaks</span>
+    <button id="tweaksClose" aria-label="Close">×</button>
+  </div>
+  <div class="tweaks-section">Exercise list weight</div>
+  <div class="tweaks-options" id="weightOpts">
+    <div class="tweak-opt" data-weight="400"><div class="sample" style="font-weight:400">Aa</div><div class="tag">400</div></div>
+    <div class="tweak-opt" data-weight="500"><div class="sample" style="font-weight:500">Aa</div><div class="tag">500</div></div>
+    <div class="tweak-opt" data-weight="600"><div class="sample" style="font-weight:600">Aa</div><div class="tag">600</div></div>
+    <div class="tweak-opt" data-weight="700"><div class="sample" style="font-weight:700">Aa</div><div class="tag">700</div></div>
+  </div>
+  <div class="tweaks-section" style="margin-top:14px;">Red title font</div>
+  <div class="tweaks-options" id="titleFontOpts" style="grid-template-columns:repeat(2,1fr);gap:6px;">
+    <div class="tweak-opt" data-title-font="'DM Sans', sans-serif" style="padding:8px 8px;"><div class="font-sample" style="font-family:'DM Sans',sans-serif;font-weight:600;text-transform:uppercase;letter-spacing:1px;color:var(--accent);">Settings</div><div class="tag">DM Sans</div></div>
+    <div class="tweak-opt" data-title-font="'Work Sans', sans-serif" style="padding:8px 8px;"><div class="font-sample" style="font-family:'Work Sans',sans-serif;font-weight:600;text-transform:uppercase;letter-spacing:1px;color:var(--accent);">Settings</div><div class="tag">Work Sans</div></div>
+  </div>
+  <div class="tweaks-section" style="margin-top:14px;">Exercise name font</div>
+  <div class="tweaks-options" id="fontOpts" style="grid-template-columns:repeat(2,1fr);gap:6px;">
+    <div class="tweak-opt" data-font="'Inter', system-ui, sans-serif" style="padding:8px 8px;"><div class="font-sample" style="font-family:'Inter',sans-serif;">Neck tilt</div><div class="tag">Inter</div></div>
+    <div class="tweak-opt" data-font="'Work Sans', sans-serif" style="padding:8px 8px;"><div class="font-sample" style="font-family:'Work Sans',sans-serif;">Neck tilt</div><div class="tag">Work Sans</div></div>
+    <div class="tweak-opt" data-font="'Archivo', sans-serif" style="padding:8px 8px;"><div class="font-sample" style="font-family:'Archivo',sans-serif;">Neck tilt</div><div class="tag">Archivo</div></div>
+    <div class="tweak-opt" data-font="'DM Sans', sans-serif" style="padding:8px 8px;"><div class="font-sample" style="font-family:'DM Sans',sans-serif;">Neck tilt</div><div class="tag">DM Sans</div></div>
+  </div>
+  <div class="tweaks-section" style="margin-top:14px;">Space above "Coach voice"</div>
+  <div class="tweaks-options" id="coachSpaceOpts" style="grid-template-columns:repeat(4,1fr);gap:6px;">
+    <div class="tweak-opt" data-space="16" style="padding:10px 4px;text-align:center;"><div style="font-family:var(--font-display);font-size:11px;font-weight:700;letter-spacing:0.5px;">16</div><div class="tag">Default</div></div>
+    <div class="tweak-opt" data-space="24" style="padding:10px 4px;text-align:center;"><div style="font-family:var(--font-display);font-size:11px;font-weight:700;letter-spacing:0.5px;">24</div><div class="tag">+8</div></div>
+    <div class="tweak-opt" data-space="32" style="padding:10px 4px;text-align:center;"><div style="font-family:var(--font-display);font-size:11px;font-weight:700;letter-spacing:0.5px;">32</div><div class="tag">+16</div></div>
+    <div class="tweak-opt" data-space="40" style="padding:10px 4px;text-align:center;"><div style="font-family:var(--font-display);font-size:11px;font-weight:700;letter-spacing:0.5px;">40</div><div class="tag">+24</div></div>
+  </div>
+  <div class="tweaks-section" style="margin-top:14px;">Timer labels (Elapsed / Total / Remaining)</div>
+  <div class="tweaks-options" id="timerLabelFontOpts" style="grid-template-columns:repeat(2,1fr);gap:6px;">
+    <div class="tweak-opt" data-timer-font="'Work Sans', sans-serif" style="padding:8px 8px;"><div class="font-sample" style="font-family:'Work Sans',sans-serif;font-weight:400;text-transform:uppercase;letter-spacing:1.5px;font-size:11px;">Elapsed</div><div class="tag">Work Sans</div></div>
+    <div class="tweak-opt" data-timer-font="'DM Sans', sans-serif" style="padding:8px 8px;"><div class="font-sample" style="font-family:'DM Sans',sans-serif;font-weight:400;text-transform:uppercase;letter-spacing:1.5px;font-size:11px;">Elapsed</div><div class="tag">DM Sans</div></div>
+  </div>
+  <div class="tweaks-section" style="margin-top:14px;">Timer label weight</div>
+  <div class="tweaks-options" id="timerLabelWeightOpts" style="grid-template-columns:repeat(2,1fr);gap:6px;">
+    <div class="tweak-opt" data-timer-weight="400" style="padding:8px 8px;"><div class="font-sample" style="font-family:'Work Sans',sans-serif;font-weight:400;text-transform:uppercase;letter-spacing:1.5px;font-size:11px;">Elapsed</div><div class="tag">400 Regular</div></div>
+    <div class="tweak-opt" data-timer-weight="500" style="padding:8px 8px;"><div class="font-sample" style="font-family:'Work Sans',sans-serif;font-weight:500;text-transform:uppercase;letter-spacing:1.5px;font-size:11px;">Elapsed</div><div class="tag">500 Medium</div></div>
+  </div>
+  <div class="tweaks-section" style="margin-top:14px;">Exercise tile border</div>
+  <div class="tweaks-options" id="exBorderOpts" style="grid-template-columns:repeat(2,1fr);gap:6px;">
+    <div class="tweak-opt" data-ex-border="2.5px|#efb07a" style="padding:8px 6px;"><div class="font-sample" style="background:#fff7d6;border:2.5px solid #efb07a;border-radius:8px;height:28px;"></div><div class="tag">Current</div></div>
+    <div class="tweak-opt" data-ex-border="2px|#efb07a" style="padding:8px 6px;"><div class="font-sample" style="background:#fff7d6;border:2px solid #efb07a;border-radius:8px;height:28px;"></div><div class="tag">Thinner</div></div>
+    <div class="tweak-opt" data-ex-border="2.5px|#f4c79a" style="padding:8px 6px;"><div class="font-sample" style="background:#fff7d6;border:2.5px solid #f4c79a;border-radius:8px;height:28px;"></div><div class="tag">Lighter</div></div>
+    <div class="tweak-opt" data-ex-border="2px|#f2bd8c" style="padding:8px 6px;"><div class="font-sample" style="background:#fff7d6;border:2px solid #f2bd8c;border-radius:8px;height:28px;"></div><div class="tag">Thin + light</div></div>
+    <div class="tweak-opt" data-ex-border="1.75px|#f5cba5" style="padding:8px 6px;"><div class="font-sample" style="background:#fff7d6;border:1.75px solid #f5cba5;border-radius:8px;height:28px;"></div><div class="tag">Softest</div></div>
+    <div class="tweak-opt" data-ex-border="2px|#f4c79a" style="padding:8px 6px;"><div class="font-sample" style="background:#fff7d6;border:2px solid #f4c79a;border-radius:8px;height:28px;"></div><div class="tag">Balanced</div></div>
+  </div>
+</div>
+
+<script>
+(function() {
+  // Tweak defaults
+  const TWEAKS = /*EDITMODE-BEGIN*/{
+    "listWeight": "500",
+    "progressTrack": "#c6d4e0",
+    "listFont": "'Work Sans', sans-serif",
+    "titleFont": "'Work Sans', sans-serif",
+    "coachTopSpace": "16",
+    "timerLabelFont": "'Work Sans', sans-serif",
+    "timerLabelWeight": "500",
+    "exBorder": "1.5px|#efb07a"
+  }/*EDITMODE-END*/;
+
+  // Migrate removed font choices back to a safe default
+  const VALID_FONTS = ["'Inter', system-ui, sans-serif", "'Work Sans', sans-serif", "'Archivo', sans-serif", "'DM Sans', sans-serif"];
+  if (!VALID_FONTS.includes(TWEAKS.listFont)) {
+    TWEAKS.listFont = "'Inter', system-ui, sans-serif";
+  }
+  const VALID_TITLE_FONTS = ["'DM Sans', sans-serif", "'Work Sans', sans-serif"];
+  if (!VALID_TITLE_FONTS.includes(TWEAKS.titleFont)) {
+    TWEAKS.titleFont = "'DM Sans', sans-serif";
+  }
+
+  function applyTweaks() {
+    document.documentElement.style.setProperty('--list-weight', TWEAKS.listWeight);
+    document.documentElement.style.setProperty('--progress-track', TWEAKS.progressTrack);
+    document.documentElement.style.setProperty('--list-font', TWEAKS.listFont);
+    document.documentElement.style.setProperty('--title-font', TWEAKS.titleFont);
+    document.documentElement.style.setProperty('--timer-label-font', TWEAKS.timerLabelFont);
+    document.documentElement.style.setProperty('--timer-label-weight', TWEAKS.timerLabelWeight);
+    // Exercise border (parses "width|color")
+    const exParts = String(TWEAKS.exBorder || "1.5px|#efb07a").split('|');
+    document.documentElement.style.setProperty('--ex-border-width', exParts[0] || '1.5px');
+    document.documentElement.style.setProperty('--ex-border-color', exParts[1] || '#efb07a');
+    const wrap = document.getElementById('coachVoiceWrap');
+
+         // if (wrap) wrap.style.marginTop = (parseInt(TWEAKS.coachTopSpace, 10) - 16) + 'px';
+
+    document.querySelectorAll('#weightOpts .tweak-opt').forEach(el => {
+      el.classList.toggle('active', el.dataset.weight === String(TWEAKS.listWeight));
+    });
+    document.querySelectorAll('#fontOpts .tweak-opt').forEach(el => {
+      el.classList.toggle('active', el.dataset.font === TWEAKS.listFont);
+    });
+    document.querySelectorAll('#titleFontOpts .tweak-opt').forEach(el => {
+      el.classList.toggle('active', el.dataset.titleFont === TWEAKS.titleFont);
+    });
+    document.querySelectorAll('#coachSpaceOpts .tweak-opt').forEach(el => {
+      el.classList.toggle('active', el.dataset.space === String(TWEAKS.coachTopSpace));
+    });
+    document.querySelectorAll('#timerLabelFontOpts .tweak-opt').forEach(el => {
+      el.classList.toggle('active', el.dataset.timerFont === TWEAKS.timerLabelFont);
+    });
+    document.querySelectorAll('#timerLabelWeightOpts .tweak-opt').forEach(el => {
+      el.classList.toggle('active', el.dataset.timerWeight === String(TWEAKS.timerLabelWeight));
+    });
+    document.querySelectorAll('#exBorderOpts .tweak-opt').forEach(el => {
+      el.classList.toggle('active', el.dataset.exBorder === TWEAKS.exBorder);
+    });
+  }
+
+  function persist() {
+    try {
+      window.parent.postMessage({type:'__edit_mode_set_keys', edits:{
+        listWeight: TWEAKS.listWeight,
+        progressTrack: TWEAKS.progressTrack,
+        listFont: TWEAKS.listFont,
+        titleFont: TWEAKS.titleFont,
+        coachTopSpace: TWEAKS.coachTopSpace,
+        timerLabelFont: TWEAKS.timerLabelFont,
+        timerLabelWeight: TWEAKS.timerLabelWeight,
+        exBorder: TWEAKS.exBorder
+      }}, '*');
+    } catch(e) {}
+  }
+
+  document.querySelectorAll('#weightOpts .tweak-opt').forEach(el => {
+    el.addEventListener('click', () => {
+      TWEAKS.listWeight = el.dataset.weight;
+      applyTweaks();
+      persist();
+    });
+  });
+  document.querySelectorAll('#fontOpts .tweak-opt').forEach(el => {
+    el.addEventListener('click', () => {
+      TWEAKS.listFont = el.dataset.font;
+      applyTweaks();
+      persist();
+    });
+  });
+  document.querySelectorAll('#titleFontOpts .tweak-opt').forEach(el => {
+    el.addEventListener('click', () => {
+      TWEAKS.titleFont = el.dataset.titleFont;
+      applyTweaks();
+      persist();
+    });
+  });
+  document.querySelectorAll('#coachSpaceOpts .tweak-opt').forEach(el => {
+    el.addEventListener('click', () => {
+      TWEAKS.coachTopSpace = el.dataset.space;
+      applyTweaks();
+      persist();
+    });
+  });
+  document.querySelectorAll('#timerLabelFontOpts .tweak-opt').forEach(el => {
+    el.addEventListener('click', () => {
+      TWEAKS.timerLabelFont = el.dataset.timerFont;
+      applyTweaks();
+      persist();
+    });
+  });
+  document.querySelectorAll('#timerLabelWeightOpts .tweak-opt').forEach(el => {
+    el.addEventListener('click', () => {
+      TWEAKS.timerLabelWeight = el.dataset.timerWeight;
+      applyTweaks();
+      persist();
+    });
+  });
+  document.querySelectorAll('#exBorderOpts .tweak-opt').forEach(el => {
+    el.addEventListener('click', () => {
+      TWEAKS.exBorder = el.dataset.exBorder;
+      applyTweaks();
+      persist();
+    });
+  });
+  document.querySelectorAll('#timerFontOpts .tweak-opt').forEach(el => {
+    el.addEventListener('click', () => {
+      TWEAKS.timerFont = el.dataset.timerFontChoice;
+      TWEAKS.timerWeight = el.dataset.timerWeight || "700";
+      applyTweaks();
+      persist();
+    });
+  });
+
+  // Host protocol
+  const panel = document.getElementById('tweaksPanel');
+  window.addEventListener('message', e => {
+    const d = e.data || {};
+    if (d.type === '__activate_edit_mode') panel.classList.add('open');
+    else if (d.type === '__deactivate_edit_mode') panel.classList.remove('open');
+  });
+  document.getElementById('tweaksClose').addEventListener('click', () => {
+    panel.classList.remove('open');
+    try { window.parent.postMessage({type:'__edit_mode_dismissed'}, '*'); } catch(e) {}
+  });
+
+  applyTweaks();
+  try { window.parent.postMessage({type:'__edit_mode_available'}, '*'); } catch(e) {}
+})();
+</script>
+</body>
+</html>
